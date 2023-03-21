@@ -1,4 +1,4 @@
-graft example_project_python
+graft bulk_mv
 
 include LICENSE
 include README.md
