@@ -2,19 +2,36 @@ import unittest
 import random
 from bulk_mv import build_from_directory, FileTree
 from pathlib import Path
+import os
 
 class TestFileTree(unittest.TestCase):
     def build_sample_1(self):
-        sample1 = build_from_directory(f"{Path(__file__).parent}/dummy_directories/sample1/")
+        sample1 = build_from_directory(f"./bulk_mv/tests/dummy_directories/sample1/")
         return sample1
 
     def build_sample_2(self):
-        sample2 = build_from_directory(f"{Path(__file__).parent}/dummy_directories/sample2/")
+        sample2 = build_from_directory(f"./bulk_mv/tests/dummy_directories/sample2/")
         return sample2
 
     def build_sample_3(self):
-        sample3 = build_from_directory(f"{Path(__file__).parent}/dummy_directories/sample3/")
+        sample3 = build_from_directory(f"./bulk_mv/tests/dummy_directories/sample3/")
         return sample3
+
+    def test_all_paths(self):
+        sample3 = self.build_sample_3()
+        expected_output = [
+            './bulk_mv/tests/dummy_directories/sample3/',
+            './bulk_mv/tests/dummy_directories/sample3/markdown/',
+            './bulk_mv/tests/dummy_directories/sample3/markdown/1.md',
+            './bulk_mv/tests/dummy_directories/sample3/markdown/2.md',
+            './bulk_mv/tests/dummy_directories/sample3/text/',
+            './bulk_mv/tests/dummy_directories/sample3/text/1.txt',
+            './bulk_mv/tests/dummy_directories/sample3/text/2.txt',
+        ]
+
+        output = sample3.all_paths()
+        
+        self.assertSetEqual(set(output), set(expected_output))
 
     def test_name(self):
         dir = FileTree("dir")

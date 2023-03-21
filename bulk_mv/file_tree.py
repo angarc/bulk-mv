@@ -1,5 +1,4 @@
 from collections import deque
-import hashlib
 
 class FileTree:
     def __init__(self, path):
@@ -7,14 +6,27 @@ class FileTree:
         self.children = []
         self.parent = None
 
-    def print_all_paths(self):
-        pass
+    def all_paths(self):
+        stack = [self]
+        paths = []
+
+        while stack:
+            tree = stack.pop()
+            paths.append(tree._path() + "/")
+
+            for child in tree.children:
+                if child._is_dir():
+                    stack.append(child)
+                else:
+                    paths.append(child._path())
+
+        return paths
+
 
     def add_child(self, child):
         self.children.append(child)
-
         child.parent = self
-        child._set_path(f"{self._path()}/{child._path()}")
+        child._set_path(f"{self._path()}/{child._name()}")
 
         def _update_paths_for_children(tree):
             if tree._children():
@@ -23,7 +35,7 @@ class FileTree:
                     tree = stack.pop()
 
                     for tree in tree.children:
-                        tree._set_path(f"{self._path()}/{tree._path()}")
+                        tree._set_path(f"{tree._parent()._path()}/{tree._name()}")
                         stack.append(tree)
 
         _update_paths_for_children(child)
@@ -80,9 +92,3 @@ class FileTree:
                 
 
         return len(stack) == 0 and len(stack) == len(other_stack)
-
-
-
-            
-
-

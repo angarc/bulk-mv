@@ -1,0 +1,17 @@
++ web/pages/images/profile_photos
++ web/assets/
+
+web/
+
+web/pages/
+web/pages/a.html
+web/pages/b.html
+
+web/static/ => web/assets/
+web/static/main.css -> script.css
+web/static/main.js -> script.js
+
+web/images/ => web/static/assets/images/
+web/images/photo.jpg => web/pages/images/profile_photos
+- web/images/delete_me.jpg
+
