@@ -1,4 +1,5 @@
 from collections import deque
+from .helpers import get_last_index_of_substring
 
 class FileTree:
     def __init__(self, path):
@@ -58,7 +59,7 @@ class FileTree:
 
     def _name(self):
         try: 
-            last_slash_index = len(self._path()) - 1 - self._path()[::-1].index("/")
+            last_slash_index = get_last_index_of_substring(self._path(), "/")
             return self._path()[last_slash_index+1:]
         except ValueError:
             return self._path()

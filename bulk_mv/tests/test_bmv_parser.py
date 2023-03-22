@@ -3,7 +3,7 @@ from bulk_mv import build_from_directory, FileTree, grammar, FileTreeVisitor
 from pathlib import Path
 import json
 
-class TestParser(unittest.TestCase):
+class TestBmvParser(unittest.TestCase):
     def sample1_file_contents(self):
         with open(f"{Path(__file__).parent}/dummy_bmv_files/sample1.bmv") as file:
             return file.read().strip()
