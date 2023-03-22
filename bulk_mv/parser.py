@@ -3,39 +3,43 @@ from parsimonious.nodes import NodeVisitor
 import json
 
 grammar = Grammar("""
-    line = (unary_operation / binary_operation / entity)*
-    entity = (filename / directory) ws
-    unary_operation = (add / delete) ws
-    binary_operation = (rename / move) ws
+    line = ((unary_operation / binary_operation / entity) ws nl?)*
+    entity = (directory / filename)
+    unary_operation = (add / delete)
+    binary_operation = (rename / move)
 
-    directory  = ~"[a-zA-Z0-9/_]+"
-    filename = ~"[a-zA-Z0-9/_]+\.[\w]+"
+    directory  = ~"[a-zA-Z0-9/_\-\.]+"
+    filename = ~"[A-Za-z0-9\./_\-]+"
 
     rename_op = "->"
-    rename = entity ws rename_op ws entity
-    move_op = "=>"
-    move = entity ws move_op ws directory
-    add_op = "+"
-    delete_op = "-"
-    add = add_op ws entity
-    delete = delete_op ws entity
+    rename = entity rws rename_op rws entity
 
+    move_op = "=>"
+    move = entity rws move_op rws directory
+
+    add_op = "+"
+    add = add_op rws entity
+
+    delete_op = "-"
+    delete = delete_op rws entity
+
+    rws = ~"\s+"
     ws = ~"\s*"
+    nl = ~"\\n"
 """)
 
 class FileTreeVisitor(NodeVisitor):
     def visit_line(self, node, visited_children):
-        output = {"move": [], "rename": [], "add": [], "delete": []}
+        output = {"move": [], "rename": [], "add": [], "delete": []}#, "dir": [], "filename": []}
         for child in visited_children:
-            if child[0] is not None:
-                for key, val in child[0].items():
+            if child[0][0] is not None:
+                for key, val in child[0][0].items():
                     output[key].append(val)
 
         return output
 
     def visit_unary_operation(self, node, visited_children):
-        bin_op, _ = node.children
-        return {bin_op.children[0].expr_name: visited_children[0][0]}
+        return {node.children[0].expr_name: visited_children[0]}
 
     def visit_add(self, node, visited_children):
         _, *_, new_entity = node.children
@@ -48,25 +52,22 @@ class FileTreeVisitor(NodeVisitor):
         return old_name
 
     def visit_binary_operation(self, node, visited_children):
-        bin_op, _ = node.children
-        return {bin_op.children[0].expr_name: visited_children[0][0]}
+        return {node.children[0].expr_name: visited_children[0]}
 
     def visit_move(self, node, visited_children):
-        old_entity_name, _, rename_op, *_, new_entity_name = node.children
+        old_entity_name, _, move_op, *_, new_entity_name = node.children
 
-        old_name = old_entity_name.children[0].children[0].text.strip()
+        old_name = old_entity_name.children[0].text.strip()
         new_name = new_entity_name.text.strip()
         return {"current_path": old_name, "new_path": new_name}
 
     def visit_rename(self, node, visited_children):
         old_entity_name, _, rename_op, *_, new_entity_name = node.children
-
-        old_name = old_entity_name.children[0].children[0].text.strip()
-        new_name = new_entity_name.children[0].children[0].text.strip()
+        old_name = old_entity_name.text.strip()
+        new_name = new_entity_name.text.strip()
         return {"old_name": old_name, "new_name": new_name}
 
     def visit_entity(self, node, visited_children):
-        path, _ = node.children
         #return visited_children[0][0]
         return None
 
