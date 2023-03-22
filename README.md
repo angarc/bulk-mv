@@ -1,5 +1,7 @@
 # Bulk-mv
 
+[![License](https://img.shields.io/github/license/angarc/bulk-mv)]()
+
 Bulk-mv is an interactive tool that does what the `mv` command does, but for mulitiple files, with the ability to do more like adding and deleting files as well.
 
 # Docs
