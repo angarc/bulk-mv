@@ -1,8 +1,8 @@
 from parsimonious.grammar import Grammar
 from parsimonious.nodes import NodeVisitor
-import json
 
-grammar = Grammar("""
+grammar = Grammar(
+    """
     line = ((unary_operation / binary_operation / entity) ws nl?)*
     entity = (directory / filename)
     unary_operation = (add / delete)
@@ -26,11 +26,13 @@ grammar = Grammar("""
     rws = ~"\s+"
     ws = ~"\s*"
     nl = ~"\\n"
-""")
+"""
+)
+
 
 class FileTreeVisitor(NodeVisitor):
     def visit_line(self, node, visited_children):
-        output = {"move": [], "rename": [], "add": [], "delete": []}#, "dir": [], "filename": []}
+        output = {"move": [], "rename": [], "add": [], "delete": []}  # , "dir": [], "filename": []}
         for child in visited_children:
             if child[0][0] is not None:
                 for key, val in child[0][0].items():
@@ -68,7 +70,7 @@ class FileTreeVisitor(NodeVisitor):
         return {"old_name": old_name, "new_name": new_name}
 
     def visit_entity(self, node, visited_children):
-        #return visited_children[0][0]
+        # return visited_children[0][0]
         return None
 
     def visit_directory(self, node, visited_children):
@@ -93,5 +95,5 @@ class FileTreeVisitor(NodeVisitor):
         return ""
 
     def generic_visit(self, node, visited_children):
-        """ The generic visit method. """
+        """The generic visit method."""
         return visited_children or node

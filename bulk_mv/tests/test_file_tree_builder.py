@@ -2,6 +2,7 @@ import unittest
 from bulk_mv import build_from_directory, FileTree
 from pathlib import Path
 
+
 class TestFileTreeBuilder(unittest.TestCase):
     def build_sample_1(self):
         sample1 = build_from_directory(f"{Path(__file__).parent}/dummy_directories/sample1/")
@@ -13,7 +14,7 @@ class TestFileTreeBuilder(unittest.TestCase):
 
     def test_build_from_directory_trivial(self):
         sample2 = self.build_sample_2()
-        
+
         ft = FileTree("sample2")
         ft.add_child(FileTree("a.txt"))
         ft.add_child(FileTree("b.txt"))
@@ -30,6 +31,5 @@ class TestFileTreeBuilder(unittest.TestCase):
 
         ft.add_child(data_folder)
         ft.add_child(web_folder)
-        
-        self.assertEqual(sample2, ft)
 
+        self.assertEqual(sample2, ft)

@@ -1,6 +1,7 @@
 from collections import deque
 from .helpers import get_last_index_of_substring
 
+
 class FileTree:
     def __init__(self, path):
         self.path = path if path[-1] != "/" else path[:-1]
@@ -23,7 +24,6 @@ class FileTree:
 
         return paths
 
-
     def add_child(self, child):
         self.children.append(child)
         child.parent = self
@@ -41,7 +41,6 @@ class FileTree:
 
         _update_paths_for_children(child)
 
-
     def _set_path(self, path):
         self.path = path
 
@@ -58,9 +57,9 @@ class FileTree:
         return len(self.children) > 0
 
     def _name(self):
-        try: 
+        try:
             last_slash_index = get_last_index_of_substring(self._path(), "/")
-            return self._path()[last_slash_index+1:]
+            return self._path()[last_slash_index + 1 :]
         except ValueError:
             return self._path()
 
@@ -86,10 +85,9 @@ class FileTree:
 
                 if len(child.children) != len(other_child.children):
                     return False
-                
+
                 if child._is_dir():
                     stack.append(child)
                     other_stack.append(other_child)
-                
 
         return len(stack) == 0 and len(stack) == len(other_stack)

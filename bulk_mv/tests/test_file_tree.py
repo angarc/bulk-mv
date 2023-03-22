@@ -4,6 +4,7 @@ from bulk_mv import build_from_directory, FileTree
 from pathlib import Path
 import os
 
+
 class TestFileTree(unittest.TestCase):
     def build_sample_1(self):
         sample1 = build_from_directory(f"./bulk_mv/tests/dummy_directories/sample1/")
@@ -30,7 +31,7 @@ class TestFileTree(unittest.TestCase):
         ]
 
         output = sample3.all_paths()
-        
+
         self.assertSetEqual(set(output), set(expected_output))
 
     def test_name(self):
@@ -68,7 +69,7 @@ class TestFileTree(unittest.TestCase):
     def test_inequality(self):
         sample1 = self.build_sample_1()
         sample2 = self.build_sample_2()
-        
+
         self.assertNotEqual(sample1, sample2)
 
     def test_exact_equality(self):
@@ -100,7 +101,7 @@ class TestFileTree(unittest.TestCase):
     def test_extra_directory(self):
         sample1 = self.build_sample_1()
         ft = self.build_sample_1()
-        
+
         dir = FileTree("some_dir")
         dir.add_child(FileTree("a.txt"))
         dir.add_child(FileTree("b.txt"))
@@ -114,7 +115,3 @@ class TestFileTree(unittest.TestCase):
         ft.add_child(FileTree("some_file"))
 
         self.assertNotEqual(sample1, ft)
-
-
-
-

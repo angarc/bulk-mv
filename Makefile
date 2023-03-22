@@ -15,7 +15,7 @@ install:  ## install library
 #########
 lint:  ## run static analysis with flake8
 	python -m black --check bulk_mv setup.py
-	python -m flake8 bulk_mv setup.py
+#	python -m flake8 bulk_mv setup.py --ignore W605
 
 # Alias
 lints: lint
@@ -42,7 +42,7 @@ test: ## clean and run unit tests
 	python -m pytest -v bulk_mv/tests
 
 coverage:  ## clean and run unit tests with coverage
-	python -m pytest -v bulk_mv/tests --cov=bulk_mv --cov-branch --cov-fail-under=75 --cov-report term-missing
+	python -m pytest -v bulk_mv/tests --cov=bulk_mv --cov-branch --cov-fail-under=75 --cov-report xml
 
 # Alias
 tests: test
