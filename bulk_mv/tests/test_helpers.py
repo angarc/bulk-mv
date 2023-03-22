@@ -1,6 +1,7 @@
 import unittest
 from bulk_mv import get_last_index_of_substring
 
+
 class TestHelpers(unittest.TestCase):
     def test_get_last_index_of_substring_normal(self):
         file_path = "/path/to/some/file"
@@ -22,5 +23,3 @@ class TestHelpers(unittest.TestCase):
         last_index = get_last_index_of_substring(string, "/")
 
         self.assertEqual(last_index, 0)
-
-

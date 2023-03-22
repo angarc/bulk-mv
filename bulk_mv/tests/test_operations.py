@@ -11,7 +11,7 @@ class TestOperations(unittest.TestCase):
 
     def test_perform_deletes(self):
         pass
-    
+
     def test_perform_renames(self):
         pass
 
@@ -20,4 +20,3 @@ class TestOperations(unittest.TestCase):
 
     def tearDown(self):
         pass
-
