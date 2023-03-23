@@ -1,0 +1,14 @@
++ bulk_mv/tests/dummy_directories/sample3/new_file.txt
+
+bulk_mv/tests/dummy_directories/sample3/photos/
+bulk_mv/tests/dummy_directories/sample3/photos/test.jpg
+
+bulk_mv/tests/dummy_directories/sample3/
+bulk_mv/tests/dummy_directories/sample3/text/ -> bulk_mv/tests/dummy_directories/sample3/txt/
+bulk_mv/tests/dummy_directories/sample3/text/2.txt
+bulk_mv/tests/dummy_directories/sample3/text/1.txt
+
+bulk_mv/tests/dummy_directories/sample3/markdown/ => bulk_mv/tests/dummy_directories/sample3/photos/markdown/
+bulk_mv/tests/dummy_directories/sample3/markdown/1.md
+- bulk_mv/tests/dummy_directories/sample3/markdown/2.md
+
