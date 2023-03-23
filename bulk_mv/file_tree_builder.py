@@ -15,6 +15,7 @@ def build_from_directory(path):
         child_file_tree = None
         if isdir(new_path) and entity_name not in ignore_set:
             child_file_tree = build_from_directory(new_path)
+            child_file_tree.is_directory = True
         else:
             child_file_tree = FileTree(new_path)
 

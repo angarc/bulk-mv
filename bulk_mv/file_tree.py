@@ -7,6 +7,7 @@ class FileTree:
         self.path = path if path[-1] != "/" else path[:-1]
         self.children = []
         self.parent = None
+        self.is_directory = False
 
     def all_paths(self):
         stack = [self]
@@ -54,7 +55,7 @@ class FileTree:
         return self.path
 
     def _is_dir(self):
-        return len(self.children) > 0
+        return self.is_directory
 
     def _name(self):
         try:
