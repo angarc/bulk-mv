@@ -22,6 +22,8 @@ class TestFileTree(unittest.TestCase):
         sample3 = self.build_sample_3()
         expected_output = [
             './bulk_mv/tests/dummy_directories/sample3/',
+            './bulk_mv/tests/dummy_directories/sample3/photos/',
+            './bulk_mv/tests/dummy_directories/sample3/photos/test.jpg',
             './bulk_mv/tests/dummy_directories/sample3/markdown/',
             './bulk_mv/tests/dummy_directories/sample3/markdown/1.md',
             './bulk_mv/tests/dummy_directories/sample3/markdown/2.md',

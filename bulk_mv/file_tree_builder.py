@@ -2,7 +2,7 @@ from os import listdir
 from os.path import isdir
 from .file_tree import FileTree
 
-ignore = ['.git', '.github', '.pytest-cache', '__pycache__', '.pytest_cache']
+ignore = ['.git', '.github', '.pytest-cache', '__pycache__', '.pytest_cache', 'node_modules', 'tmp']
 
 
 def build_from_directory(path):
