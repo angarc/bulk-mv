@@ -5,7 +5,7 @@ from setuptools import setup
 
 setup(
     name='bulk-mv',
-    version='0.1.0',
+    version = "0.1.0",
     description='Move, rename, delete, and add files as fast as you can use Vim.',
     author='Angel Garcia',
     author_email='angarc37@gmail.com',
