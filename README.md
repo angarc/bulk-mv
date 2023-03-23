@@ -1,4 +1,4 @@
-# Bulk-mv
+# Overview
 
 [![License](https://img.shields.io/github/license/angarc/bulk-mv)]()
 [![Issues](https://img.shields.io/github/issues/angarc/bulk-mv)]()
@@ -7,7 +7,14 @@
 
 Bulk-mv is an interactive tool that does what the `mv` command does, but for mulitiple files, with the ability to do more like adding and deleting files as well.
 
-# Docs
+# Installation
+
+```
+pip install bulk-mv
+```
+
+
+# Usage
 
 When you run `bmv [path]`, a vim buffer with a representation of the file tree starting at the directory at `[path]` will open.
 
@@ -83,7 +90,7 @@ Say you wanted to:
 1. Delete the `delete_me.jpg` file.
 2. Move the `images` folder to the `static` folder.
 3. Rename `main.js` to `script.js`
-4. Create a web/fonts/ folder
+4. Create a `web/fonts/` folder
 
 You would write:
 
@@ -108,7 +115,7 @@ When you save and quit vim, `bmv` will perform all the operations.
 
 ## Order of operations
 
-Operations are given the following precedence
+Operations are given the following precedence:
 
 1. add
 2. delete
