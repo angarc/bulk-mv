@@ -4,6 +4,14 @@ bulk\_mv package
 Submodules
 ----------
 
+bulk\_mv.bmv\_generator module
+------------------------------
+
+.. automodule:: bulk_mv.bmv_generator
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 bulk\_mv.bmv\_parser module
 ---------------------------
 
