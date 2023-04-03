@@ -3,9 +3,17 @@ class BmvGenerator:
         pass
 
     def generate(self, tree):
-        return self.generate_helper(tree, 0)
+        """Generates a bmv file from a FileTree
 
-    def generate_helper(self, tree, depth):
+        Args:
+            tree (FileTree): the root node of the FileTree
+        
+        Returns:
+            str: the bmv file contents
+        """
+        return self._generate_helper(tree, 0)
+
+    def _generate_helper(self, tree, depth):
         tab = ''.join(['\t'] * depth)
         tab_plus_one = tab + "\t"
         name = tree._path() if depth == 0 else tree.name()
@@ -18,6 +26,6 @@ class BmvGenerator:
 
         for child in tree.children():
             if child._is_dir():
-                contents += self.generate_helper(child, depth + 1)
+                contents += self._generate_helper(child, depth + 1)
 
         return contents + tab + "}\n"

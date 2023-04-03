@@ -56,6 +56,11 @@ class FileTree:
         self.path = path
 
     def children(self):
+        """Gets the children of the callee FileTree node
+
+        Returns:
+            array: array of FileTree nodes
+        """
         return self._children
 
     def _parent(self):
@@ -68,6 +73,16 @@ class FileTree:
         return self.is_directory
 
     def name(self):
+        """Gets the name of the callee FileTree node
+
+        Is derived from the path. The name is the last substring of the path
+        after the last slash.
+
+        For example, if the path is "foo/bar/baz", the name is "baz".
+
+        Returns:
+            str: the name of the callee FileTree node
+        """
         try:
             last_slash_index = get_last_index_of_substring(self._path(), "/")
             return self._path()[last_slash_index + 1 :]

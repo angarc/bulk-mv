@@ -7,6 +7,14 @@ class TreeToOperations(Transformer):
         return items[0]
 
     def dir(self, items):
+        """Creates a dict representation of a directory.
+
+        Args:
+            items (array): Array of node items from the Lark parser
+
+        Returns:
+            dict: dict representation of a directory
+        """
         dirname = items[1]['dir_op']['dirname']
         dirs = []
         files = []
@@ -47,19 +55,51 @@ class TreeToOperations(Transformer):
         }
 
     def dir_op(self, items):
+        """Creates a dict representation of a directory operation.
+
+        Args:
+            items (array): Array of node items from the Lark parser
+
+        Returns:
+            dict: dict representation of a directory operation
+        """
         return {'dir_op': items[0]}
 
     def rename_dir_op(self, items):
+        """Creates a dict representation of a directory rename operation.
+
+        Args:
+            items (array): Array of node items from the Lark parser
+
+        Returns:
+            dict: dict representation of a directory rename operation
+        """
         old_name = items[0]['dirname']
         new_name = items[4]['dirname']
         return {'dirname': old_name, 'rename': {'old_name': old_name, 'new_name': new_name}}
 
     def move_dir_op(self, items):
+        """Creates a dict representation of a directory move operation.
+
+        Args:
+            items (array): Array of node items from the Lark parser
+
+        Returns:
+            dict: dict representation of a directory move operation
+        """
         current_name = items[0]['dirname']
         new_path = items[4]['dirname']
         return {'dirname': current_name, 'move': {'current_name': current_name, 'new_path': new_path}}
 
     def block(self, items):
+        """Creates a dict representation of a block.
+
+        Args:
+            items (array): Array of node items from the Lark parser
+
+        Returns:
+            dict: dict representation of a block
+        """
         files = []
         dirs = []
         unary_ops = []
@@ -87,40 +127,120 @@ class TreeToOperations(Transformer):
         return {'dirs': dirs, 'files': files, 'unary': unary_ops, 'file_op': file_op}
 
     def block_item(self, items):
+        """Creates a dict representation of a block item.
+
+        Args:
+            items (array): Array of node items from the Lark parser
+
+        Returns:
+            dict: dict representation of a block item
+        """
         return items[0]
 
     def entity(self, items):
+        """Creates a dict representation of an entity.
+
+        Args:
+            items (array): Array of node items from the Lark parser
+
+        Returns:
+            dict: dict representation of an entity
+        """
         if 'file' in items[0]:
             return {'file': items[0]['file']}
 
         return items[0]
 
     def file_op(self, items):
+        """Creates a dict representation of a file operation.
+
+        Args:
+            items (array): Array of node items from the Lark parser
+
+        Returns:
+            dict: dict representation of a file operation
+        """
         return {'file_op': items[0]}
 
     def rename_file_op(self, items):
+        """Creates a dict representation of a file rename operation.
+
+        Args:
+            items (array): Array of node items from the Lark parser
+
+        Returns:
+            dict: dict representation of a file rename operation
+        """
         old_file_name = items[0]['file']
         new_file_name = items[4]['file']
         return {'rename_file_op': {'old_name': old_file_name, 'new_name': new_file_name}}
 
     def move_file_op(self, items):
+        """Creates a dict representation of a file move operation.
+
+        Args:
+            items (array): Array of node items from the Lark parser
+
+        Returns:
+            dict: dict representation of a file move operation
+        """
         current_name = items[0]['file']
         new_path = items[4]['dirname']
         return {'move_file_op': {'current_name': current_name, 'new_path': new_path}}
 
     def unary_op(self, items):
+        """Creates a dict representation of a unary operation.
+
+        Args:
+            items (array): Array of node items from the Lark parser
+        
+        Returns:
+            dict: dict representation of a unary operation
+        """
         return {'unary': items[0]}
 
     def add_op(self, items):
+        """Creates a dict representation of an add operation.
+
+        Args:
+            items (array): Array of node items from the Lark parser
+
+        Returns:
+            dict: dict representation of an add operation
+        """
         return {'add': items[1]}
 
     def delete_op(self, items):
+        """Creates a dict representation of a delete operation.
+
+        Args:
+            items (array): Array of node items from the Lark parser
+
+        Returns:
+            dict: dict representation of a delete operation
+        """
         return {'delete': items[1]}
 
     def dirname(self, items):
+        """Creates a dict representation of a directory name.
+
+        Args:
+            items (array): Array of node items from the Lark parser
+
+        Returns:
+            dict: dict representation of a directory name
+        """
         return {'dirname': items[0].value}
 
     def filename(self, items):
+        """Creates a dict representation of a file name.
+
+        Args:
+            items (array): Array of node items from the Lark parser
+
+        Returns:
+            dict: dict representation of a file name
+        """
         return {'file': items[0].value}
 
     def rename_op(self, _):
@@ -140,6 +260,16 @@ class TreeToOperations(Transformer):
 
 
 def get_operations(tree, ops, current_path):
+    """Extracts operation instructions from BMV Parse tree
+
+    Args:
+        tree (dict): BMV Parse tree
+        ops (dict): Dictionary to store operations
+        current_path (str): Current path of the directory
+
+    Returns:
+        dict: Dictionary of operations
+    """
     for op in tree['unary']:
         if 'add' in op:
             if 'file' in op['add']:
@@ -194,6 +324,14 @@ def get_operations(tree, ops, current_path):
 
 
 def parse_bmv(data):
+    """Parses a BMV string and returns a dictionary of operations
+
+    Args:
+        data (str): BMV string
+    
+    Returns:
+        dict: Dictionary of operations
+    """
     parser = Lark.open("bmv.lark", rel_to=__file__, parser='lalr')
     tree = parser.parse(data)
     res = TreeToOperations().transform(tree)
@@ -206,6 +344,14 @@ def parse_bmv(data):
 
 
 def dict_representation(data):
+    """Creates a dict representation of a BMV file and all of its operations
+
+    Args:
+        data (str): BMV string
+
+    Returns:
+        dict: dict representation of a BMV string
+    """
     parser = Lark.open("bmv.lark", rel_to=__file__, parser='lalr')
     tree = parser.parse(data)
     res = TreeToOperations().transform(tree)

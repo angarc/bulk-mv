@@ -7,7 +7,7 @@
 [![codecov](https://img.shields.io/codecov/c/github/angarc/bulk-mv)]()
 [![build](https://img.shields.io/github/actions/workflow/status/angarc/bulk-mv/build.yml)]()
 [![PyPI](https://img.shields.io/pypi/v/bulk-mv)](https://pypi.org/project/bulk-mv/)
-
+[![Docs](https://img.shields.io/readthedocs/bulk-mv)](https://bulk-mv.readthedocs.io/en/latest/)
 
 bulk-mv is an interactive tool that does what the `mv` command does, but for mulitiple files, with the ability to do more like adding and deleting files as well.
 
@@ -210,3 +210,8 @@ Operations are given the following precedence:
 3. rename (files first, then directories)
 4. move (files first, then directories)
 
+## Caveat
+
+So far, bulk-mv only works on files/directories with [POSIX Portable filenames/dirnames](https://www.ibm.com/docs/en/zos/2.2.0?topic=locales-posix-portable-file-name-character-set).
+
+In the future version, I want bulk-mv to support any type of support filenames on Mac OS, Linux, and Windows.

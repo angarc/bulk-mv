@@ -15,7 +15,6 @@ def run(start_path):
         int: error code
 
     """
-
     ft = build_from_directory(start_path)
     bmv_content = BmvGenerator().generate(ft)
 
