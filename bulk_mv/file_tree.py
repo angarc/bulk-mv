@@ -10,6 +10,11 @@ class FileTree:
         self.is_directory = False
 
     def all_paths(self):
+        """Genterates every path for every node under a FileTree node
+
+        Returns:
+            array: array of string paths
+        """
         stack = [self]
         paths = []
 
@@ -26,6 +31,11 @@ class FileTree:
         return paths
 
     def add_child(self, child):
+        """Adds a child FileTree node to the callee FileTree node
+
+        Args:
+            child (FileTree): the node to be made a child
+        """
         self.children.append(child)
         child.parent = self
         child._set_path(f"{self._path()}/{child._name()}")

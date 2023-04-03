@@ -5,6 +5,16 @@ from .operations import perform_adds, perform_deletes, perform_renames, perform_
 
 
 def run(start_path):
+    """Runs the full pipeline for bmv.
+
+    Args:
+        start_path (str): The directory where you want to run bmv in.
+
+    Returns:
+        int: error code
+
+    """
+
     ft = build_from_directory(start_path)
     paths = ft.all_paths()
 
