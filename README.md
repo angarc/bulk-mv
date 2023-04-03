@@ -44,23 +44,23 @@ Then running `bmv <path>` will open up the following bmv file in a vim buffer:
 
 ```bmv
 [./] {
-	README.md
-	[web] {
-		[public] {
-			[photos] {
-				logo.png
-			}
-		}
-		[static] {
-			[styles] {
-				main.css
-			}
-			[javascript] {
-				auth.js
-				main.js
-			}
-		}
-	}
+  README.md
+  [web] {
+    [public] {
+      [photos] {
+        logo.png
+      }
+    }
+    [static] {
+      [styles] {
+        main.css
+      }
+      [javascript] {
+        auth.js
+        main.js
+      }
+    }
+  }
 }
 ```
 
@@ -72,13 +72,13 @@ Here's how to use it to add new files and directories
 
 ```bmv
 [./] {
-	README.md
-	[web] {
-		[public] {
-			[photos] {
-				logo.png
-			}
-		}
+  README.md
+  [web] {
+    [public] {
+      [photos] {
+        logo.png
+      }
+    }
 
     + [templates] {
       + [dashboard] {
@@ -90,17 +90,17 @@ Here's how to use it to add new files and directories
       about.html
     }
 
-		[static] {
-			[styles] {
-				main.css
+    [static] {
+      [styles] {
+        main.css
         + dashboard.css
-			}
-			[javascript] {
-				auth.js
-				main.js
-			}
-		}
-	}
+      }
+      [javascript] {
+        auth.js
+        main.js
+      }
+    }
+  }
 }
 ```
 
@@ -118,23 +118,23 @@ You can delete entire directories or files like this:
 
 ```bmv
 [./] {
-	README.md
-	[web] {
-		[public] {
-			[photos] {
-				logo.png
-			}
-		}
-		[static] {
-			- [styles] {
-				main.css
-			}
-			[javascript] {
-				- auth.js
-				main.js
-			}
-		}
-	}
+  README.md
+  [web] {
+    [public] {
+      [photos] {
+        logo.png
+      }
+    }
+    [static] {
+      - [styles] {
+        main.css
+      }
+      [javascript] {
+        - auth.js
+        main.js
+      }
+    }
+  }
 }
 ```
 
@@ -146,23 +146,23 @@ You can rename files or directories using the `>` operator.
 
 ```bmv
 [./] {
-	README.md
-	[web] {
-		[public] {
-			[photos > images] {
-				logo.png
-			}
-		}
-		[static] {
-			[styles] {
-				main.css
-			}
-			[javascript] {
-				auth.js
-				main.js > script.js
-			}
-		}
-	}
+  README.md
+  [web] {
+    [public] {
+      [photos > images] {
+        logo.png
+      }
+    }
+    [static] {
+      [styles] {
+        main.css
+      }
+      [javascript] {
+        auth.js
+        main.js > script.js
+      }
+    }
+  }
 }
 ```
 
@@ -174,23 +174,23 @@ You can move files or directories using the `>>` operator. Moving files to paths
 
 ```bmv
 [./] {
-	README.md >> ./web
-	[web] {
-		[public] {
-			[photos >> ./web/static] {
-				logo.png
-			}
-		}
-		[static] {
-			[styles] {
-				main.css
-			}
-			[javascript] {
-				auth.js
-				main.js
-			}
-		}
-	}
+  README.md >> ./web
+  [web] {
+    [public] {
+      [photos >> ./web/static] {
+        logo.png
+      }
+    }
+    [static] {
+      [styles] {
+        main.css
+      }
+      [javascript] {
+        auth.js
+        main.js
+      }
+    }
+  }
 }
 
 ```
