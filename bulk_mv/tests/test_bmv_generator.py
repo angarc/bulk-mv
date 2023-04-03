@@ -1,6 +1,7 @@
 import unittest
 from bulk_mv import build_from_directory, parse_bmv, BmvGenerator, dict_representation
 
+
 class TestBmvGenerator(unittest.TestCase):
     def test_generator(self):
         file_tree = build_from_directory("./bulk_mv/tests/dummy_directories/sample1")
@@ -10,48 +11,37 @@ class TestBmvGenerator(unittest.TestCase):
         expected_output = {
             "dir": {
                 "dirname": "./bulk_mv/tests/dummy_directories/sample1",
-                "files": [
-                    "index.html"
-                ],
+                "files": ["index.html"],
                 "unary": [],
                 "dir_op": [],
                 "file_op": [],
                 "dirs": [
                     {
                         "dirname": "admin",
-                        "files": [
-                            "index.html",
-                            "nichoal.html"
-                        ],
+                        "files": ["index.html", "nichoal.html"],
                         "unary": [],
                         "dir_op": [],
                         "file_op": [],
-                        "dirs": []
+                        "dirs": [],
                     },
                     {
                         "dirname": "users",
-                        "files": [
-                            "josh.html",
-                            "angel.html",
-                            "index.html"
-                        ],
+                        "files": ["josh.html", "angel.html", "index.html"],
                         "unary": [],
                         "dir_op": [],
                         "file_op": [],
                         "dirs": [
                             {
                                 "dirname": "blocked",
-                                "files": [
-                                    "blocked_user_1.html"
-                                ],
+                                "files": ["blocked_user_1.html"],
                                 "unary": [],
                                 "dir_op": [],
                                 "file_op": [],
-                                "dirs": []
+                                "dirs": [],
                             }
-                        ]
-                    }
-                ]
+                        ],
+                    },
+                ],
             }
         }
 

@@ -1,13 +1,14 @@
 from lark import Lark, Transformer
 from .helpers import get_last_index_of_substring
 
+
 class TreeToOperations(Transformer):
     def start(self, items):
         return items[0]
 
     def dir(self, items):
         dirname = items[1]['dir_op']['dirname']
-        dirs  = []
+        dirs = []
         files = []
         unary_ops = []
         file_op = []
@@ -34,7 +35,16 @@ class TreeToOperations(Transformer):
         if 'rename' in items[1]['dir_op']:
             dir_op.append({'rename': items[1]['dir_op']['rename']})
 
-        return {'dir': {'dirname': dirname, 'files': files, 'unary': unary_ops, 'dir_op': dir_op, 'file_op': file_op, 'dirs': dirs}}
+        return {
+            'dir': {
+                'dirname': dirname,
+                'files': files,
+                'unary': unary_ops,
+                'dir_op': dir_op,
+                'file_op': file_op,
+                'dirs': dirs,
+            }
+        }
 
     def dir_op(self, items):
         return {'dir_op': items[0]}
@@ -78,7 +88,7 @@ class TreeToOperations(Transformer):
 
     def block_item(self, items):
         return items[0]
-    
+
     def entity(self, items):
         if 'file' in items[0]:
             return {'file': items[0]['file']}
@@ -121,12 +131,13 @@ class TreeToOperations(Transformer):
 
     def rbrace(self, _):
         return "}"
-    
+
     def lbrack(self, _):
         return "["
-    
+
     def rbrack(self, _):
         return "]"
+
 
 def get_operations(tree, ops, current_path):
     for op in tree['unary']:
@@ -164,7 +175,7 @@ def get_operations(tree, ops, current_path):
     for op in tree['dir_op']:
         if 'rename' in op:
             if current_path != op['rename']['old_name']:
-                old_path = current_path + '/' 
+                old_path = current_path + '/'
 
                 last_slash_index = get_last_index_of_substring(current_path, "/")
                 new_path = current_path[:last_slash_index] + '/' + op['rename']['new_name']

@@ -17,7 +17,7 @@ class BmvGenerator:
                 contents += tab_plus_one + child.name() + "\n"
 
         for child in tree.children():
-           if child._is_dir():
-               contents += self.generate_helper(child, depth + 1)
+            if child._is_dir():
+                contents += self.generate_helper(child, depth + 1)
 
         return contents + tab + "}\n"
