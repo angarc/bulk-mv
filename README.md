@@ -1,3 +1,5 @@
+![cover_photo](./branding/logo.png)
+
 # Overview
 
 [![License](https://img.shields.io/github/license/angarc/bulk-mv)]()

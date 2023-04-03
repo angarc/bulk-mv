@@ -6,6 +6,14 @@ ignore = ['.git', '.github', '.pytest-cache', '__pycache__', '.pytest_cache', 'n
 
 
 def build_from_directory(path):
+    """Builds a FileTree representation of a directory at a given path
+
+    Args:
+        path (str): Path to directory from which a FileTree will be created
+
+    Returns:
+        FileTree: The resulting FileTree
+    """
     file_tree = FileTree(path)
     ignore_set = set(ignore)
 

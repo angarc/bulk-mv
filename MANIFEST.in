@@ -8,6 +8,12 @@ include .bumpversion.cfg
 include pyproject.toml
 include Makefile
 
+include branding/*.png
+recursive-include doc *.bat
+recursive-include doc *.py
+recursive-include doc *.rst
+recursive-include doc Makefile
+
 prune .github
 exclude .gitignore
 exclude .gitattributes
