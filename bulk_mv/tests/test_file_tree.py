@@ -44,10 +44,10 @@ class TestFileTree(unittest.TestCase):
         sub_dir.add_child(FileTree("test.txt"))
         dir.add_child(sub_dir)
 
-        self.assertEqual(dir._name(), "dir")
-        self.assertEqual(dir._children()[0]._name(), "file.txt")
-        self.assertEqual(dir._children()[1]._name(), "sub_dir")
-        self.assertEqual(dir._children()[1]._children()[0]._name(), "test.txt")
+        self.assertEqual(dir.name(), "dir")
+        self.assertEqual(dir.children()[0].name(), "file.txt")
+        self.assertEqual(dir.children()[1].name(), "sub_dir")
+        self.assertEqual(dir.children()[1].children()[0].name(), "test.txt")
 
     def test_add_child(self):
         dir = FileTree("dir")
@@ -61,9 +61,9 @@ class TestFileTree(unittest.TestCase):
         dir.add_child(sub_dir)
 
         self.assertEqual(dir._path(), "dir")
-        self.assertEqual(dir._children()[0]._path(), "dir/file.txt")
-        self.assertEqual(dir._children()[1]._path(), "dir/sub_dir")
-        self.assertEqual(dir._children()[1]._children()[0]._path(), "dir/sub_dir/test.txt")
+        self.assertEqual(dir.children()[0]._path(), "dir/file.txt")
+        self.assertEqual(dir.children()[1]._path(), "dir/sub_dir")
+        self.assertEqual(dir.children()[1].children()[0]._path(), "dir/sub_dir/test.txt")
         self.assertEqual(sub_dir._parent(), dir)
         self.assertEqual(file_txt._parent(), dir)
         self.assertEqual(test_txt._parent(), sub_dir)
@@ -92,9 +92,9 @@ class TestFileTree(unittest.TestCase):
         stack = [sample1_dup]
         while stack:
             tree = stack.pop()
-            random.shuffle(tree.children)
+            random.shuffle(tree.children())
 
-            for child in tree.children:
+            for child in tree.children():
                 if child._is_dir():
                     stack.append(child)
 

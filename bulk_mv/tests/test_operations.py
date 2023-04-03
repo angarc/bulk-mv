@@ -1,8 +1,7 @@
 import unittest
 from bulk_mv import (
     build_from_directory,
-    grammar,
-    FileTreeVisitor,
+    parse_bmv,
     perform_adds,
     perform_deletes,
     perform_renames,
@@ -15,9 +14,7 @@ from shutil import rmtree, move
 class TestOperations(unittest.TestCase):
     def setUp(self):
         with open("bulk_mv/tests/dummy_bmv_files/sample3.bmv", "r") as file:
-            tree = grammar.parse(file.read().strip())
-            ftv = FileTreeVisitor()
-            self.output = ftv.visit(tree)
+            self.output = parse_bmv(file.read().strip())
 
     def test_perform_adds(self):
         perform_adds(self.output["add"])
@@ -34,14 +31,16 @@ class TestOperations(unittest.TestCase):
         open("./bulk_mv/tests/dummy_directories/sample3/markdown/2.md", 'a').close()
 
     def test_perform_renames(self):
-        perform_renames(self.output["rename"])
+        perform_renames(self.output["rename_files"])
+        perform_renames(self.output["rename_dirs"])
 
         self.assertTrue(path.exists("./bulk_mv/tests/dummy_directories/sample3/txt/"))
 
         rename("./bulk_mv/tests/dummy_directories/sample3/txt/", "./bulk_mv/tests/dummy_directories/sample3/text/")
 
     def test_perform_moves(self):
-        perform_moves(self.output["move"])
+        perform_moves(self.output["move_files"])
+        perform_moves(self.output["move_dirs"])
 
         self.assertTrue(path.exists("./bulk_mv/tests/dummy_directories/sample3/photos/markdown/"))
 

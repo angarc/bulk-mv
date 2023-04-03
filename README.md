@@ -19,110 +19,194 @@ pip install bulk-mv
 
 # Usage
 
-When you run `bmv [path]`, a vim buffer with a representation of the file tree starting at the directory at `[path]` will open.
+When you run `bmv <path>`, a bulk-mv (bmv) file will open in a vim buffer, representing the file tree starting in the directory located at `<path>`.
 
-Something like this:
+Then, you can make your modifications in the vim buffer, and run `:wq` to perform the changes.
 
+Suppose your directory file tree was this:
+
+```tree
+.
+├── README.md
+└── web
+    ├── public
+    │   └── photos
+    │       └── logo.png
+    └── static
+        ├── javascript
+        │   ├── auth.js
+        │   └── main.js
+        └── styles
+            └── main.css
 ```
-web/
-web/pages/
-web/pages/a.html
-web/pages/b.html
-web/static/
-web/static/main.css
-web/static/main.js
-web/images/ 
-web/images/photo.jpg
-web/images/delete_me.jpg
+
+Then running `bmv <path>` will open up the following bmv file in a vim buffer:
+
+```bmv
+[./] {
+	README.md
+	[web] {
+		[public] {
+			[photos] {
+				logo.png
+			}
+		}
+		[static] {
+			[styles] {
+				main.css
+			}
+			[javascript] {
+				auth.js
+				main.js
+			}
+		}
+	}
+}
 ```
 
 ## Creating new files/directories
 
-You can add files or directories using the `+` operator. It works by typing `+ path/to/new/file.txt` on a new line.
-If any directories along the path to this new file don't exist, bmv will create them.
+You can add files or directories using the `+` operator. 
 
-```
-+ web/fonts/
+Here's how to use it to add new files and directories
 
-web/
-web/pages/
-...
+```bmv
+[./] {
+	README.md
+	[web] {
+		[public] {
+			[photos] {
+				logo.png
+			}
+		}
+
+    + [templates] {
+      + [dashboard] {
+        dashboard.html
+        admin.html
+      }
+
+      index.html
+      about.html
+    }
+
+		[static] {
+			[styles] {
+				main.css
+        + dashboard.css
+			}
+			[javascript] {
+				auth.js
+				main.js
+			}
+		}
+	}
+}
 ```
+
+Notice how you can add multiple nested directories. If you want to add a single file
+you need to type `+ new_file.txt` in the directory block where you want it.
+
+If you create a new directory with (also new) files inside of it, you don't need to use
+the `+` operator to add them. But for new nested directories, you do need to use the `+` operator.
 
 ## Deleting files/directories
 
-You can delete files or directories using the `-` operator. It works by typing `- path/to/new/file.txt` on a new line.
+You can delete files or directories using the `-` operator. 
 
-```
-web/
-...
-web/images/photo.jpg
-- web/images/delete_me.jpg
+You can delete entire directories or files like this:
+
+```bmv
+[./] {
+	README.md
+	[web] {
+		[public] {
+			[photos] {
+				logo.png
+			}
+		}
+		[static] {
+			- [styles] {
+				main.css
+			}
+			[javascript] {
+				- auth.js
+				main.js
+			}
+		}
+	}
+}
 ```
 
+Running this would delete the `./web/static/javascript/auth.js` file as well as the `./web/static/styles/` folder (and of course everything in it).
 
 ## Renaming files/directories
 
-You can rename files or directories using the `->` operator. 
+You can rename files or directories using the `>` operator. 
 
-```
-web/
-web/pages/
-web/pages/a.html -> web/pages/c.html
-web/pages/b.html -> web/pages/d.html
+```bmv
+[./] {
+	README.md
+	[web] {
+		[public] {
+			[photos > images] {
+				logo.png
+			}
+		}
+		[static] {
+			[styles] {
+				main.css
+			}
+			[javascript] {
+				auth.js
+				main.js > script.js
+			}
+		}
+	}
+}
 ```
 
+Running this would change rename the `./web/public/photos/` directory to `./web/public/images/`, and it rename `./web/static/javascript/main.js` to `./web/static/javascript/script.js`
 
 ## Moving files/directories
 
-You can move files or directories using the `=>` operator. Moving files to paths with non-existent directories *will not be created automatically*.
-Use the `add` operator to do it first.
+You can move files or directories using the `>>` operator. Moving files to paths with non-existent directories *will not be created automatically*.
+
+```bmv
+[./] {
+	README.md >> ./web
+	[web] {
+		[public] {
+			[photos >> ./web/static] {
+				logo.png
+			}
+		}
+		[static] {
+			[styles] {
+				main.css
+			}
+			[javascript] {
+				auth.js
+				main.js
+			}
+		}
+	}
+}
 
 ```
-web/
-web/static/
-web/images/ => web/static/images/
-web/images/photo.jpg
-web/images/delete_me.jpg
-```
+
+Running this would move `./README.md` to `./web/README.md`, and move `./web/public/photos/` to `./web/static/photos`.
+
+You currently have to specify the full path to the directory you want to move the file/directory to starting from root path of the file tree (in this case, it's `./`).
 
 ## Putting it all together.
 
-Say you wanted to:
-
-1. Delete the `delete_me.jpg` file.
-2. Move the `images` folder to the `static` folder.
-3. Rename `main.js` to `script.js`
-4. Create a `web/fonts/` folder
-
-You would write:
-
-```
-+ web/fonts/
-
-web/
-web/pages/
-web/pages/a.html
-web/pages/b.html
-
-web/static/
-web/static/main.css
-web/static/main.js -> web/static/script.js
-
-web/images/ => web/static/images/
-web/images/photo.jpg
-- web/images/delete_me.jpg
-```
-
-When you save and quit vim, `bmv` will perform all the operations.
-
-## Order of operations
+Of course, you can mix and match these operations all in one go. Just note the order of operations to avoid making a mistake, like moving a file to a directory that you haven't created yet, for example.
 
 Operations are given the following precedence:
 
 1. add
 2. delete
-3. rename
-4. move
-
+3. rename (files first, then directories)
+4. move (files first, then directories)
 
