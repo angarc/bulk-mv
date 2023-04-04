@@ -1,3 +1,5 @@
+TMPREPO=/tmp/docs/bulk-mv
+
 #########
 # BUILD #
 #########
@@ -84,6 +86,20 @@ deep-clean: ## clean everything from the repository
 
 clean: ## clean the repository
 	rm -rf .coverage coverage cover htmlcov logs build dist *.egg-info .pytest_cache
+
+docs: 
+	$(MAKE) -C doc/ clean
+	$(MAKE) -C doc/ html
+
+pages: 
+	rm -rf $(TMPREPO)
+	git clone -b gh-pages git@github.com:angarc/bulk-mv.git $(TMPREPO)
+	rm -rf $(TMPREPO)/*
+	cp -r doc/_build/html/* $(TMPREPO)
+	cd $(TMPREPO);\
+	git add -A ;\
+	git commit -a -m 'auto-updating docs' ;\
+	git push
 
 ############################################################################################
 
