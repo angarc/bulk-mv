@@ -64,6 +64,20 @@ Then running `bmv <path>` will open up the following bmv file in a vim buffer:
 }
 ```
 
+## Some Use Cases
+
+### Renaming multiple files
+
+https://user-images.githubusercontent.com/18252779/229863811-2911994a-8007-4ca1-bccc-b04dd08b3a3e.mov
+
+### Moving multiple directories
+
+https://user-images.githubusercontent.com/18252779/229863965-0afdadea-ae9f-446f-8b58-2fb3308948f4.mov
+
+# BMV Syntax
+
+Here's how to use the only four operators in BMV (`+`, `-`, `>`, `>>`) to add, delete, rename, and move files and/or directories. 
+
 ## Creating new files/directories
 
 You can add files or directories using the `+` operator. 
@@ -166,7 +180,7 @@ You can rename files or directories using the `>` operator.
 }
 ```
 
-Running this would change rename the `./web/public/photos/` directory to `./web/public/images/`, and it rename `./web/static/javascript/main.js` to `./web/static/javascript/script.js`
+Running this would rename the `./web/public/photos/` directory to `./web/public/images/`, and rename `./web/static/javascript/main.js` to `./web/static/javascript/script.js`
 
 ## Moving files/directories
 
