@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>bulk_mv package &mdash; bulk-mv 0.1.3 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="bulk_mv" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            bulk-mv
+          </a>
+              <div class="version">
+                0.1.3
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">bulk_mv</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">bulk_mv package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-bulk_mv.bmv_generator">bulk_mv.bmv_generator module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#bulk_mv.bmv_generator.BmvGenerator"><code class="docutils literal notranslate"><span class="pre">BmvGenerator</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-bulk_mv.bmv_parser">bulk_mv.bmv_parser module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#bulk_mv.bmv_parser.TreeToOperations"><code class="docutils literal notranslate"><span class="pre">TreeToOperations</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bulk_mv.bmv_parser.get_operations"><code class="docutils literal notranslate"><span class="pre">get_operations()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bulk_mv.bmv_parser.parse_bmv"><code class="docutils literal notranslate"><span class="pre">parse_bmv()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-bulk_mv.cli">bulk_mv.cli module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#bulk_mv.cli.run"><code class="docutils literal notranslate"><span class="pre">run()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-bulk_mv.file_tree">bulk_mv.file_tree module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#bulk_mv.file_tree.FileTree"><code class="docutils literal notranslate"><span class="pre">FileTree</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-bulk_mv.file_tree_builder">bulk_mv.file_tree_builder module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#bulk_mv.file_tree_builder.build_from_directory"><code class="docutils literal notranslate"><span class="pre">build_from_directory()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-bulk_mv.helpers">bulk_mv.helpers module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#bulk_mv.helpers.get_last_index_of_substring"><code class="docutils literal notranslate"><span class="pre">get_last_index_of_substring()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-bulk_mv.operations">bulk_mv.operations module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#bulk_mv.operations.perform_adds"><code class="docutils literal notranslate"><span class="pre">perform_adds()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bulk_mv.operations.perform_deletes"><code class="docutils literal notranslate"><span class="pre">perform_deletes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bulk_mv.operations.perform_moves"><code class="docutils literal notranslate"><span class="pre">perform_moves()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bulk_mv.operations.perform_renames"><code class="docutils literal notranslate"><span class="pre">perform_renames()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-bulk_mv">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">bulk-mv</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">bulk_mv</a></li>
+      <li class="breadcrumb-item active">bulk_mv package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/bulk_mv.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="bulk-mv-package">
+<h1>bulk_mv package<a class="headerlink" href="#bulk-mv-package" title="Permalink to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-bulk_mv.bmv_generator">
+<span id="bulk-mv-bmv-generator-module"></span><h2>bulk_mv.bmv_generator module<a class="headerlink" href="#module-bulk_mv.bmv_generator" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="bulk_mv.bmv_generator.BmvGenerator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bulk_mv.bmv_generator.</span></span><span class="sig-name descname"><span class="pre">BmvGenerator</span></span><a class="headerlink" href="#bulk_mv.bmv_generator.BmvGenerator" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="bulk_mv.bmv_generator.BmvGenerator.generate">
+<span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bulk_mv.bmv_generator.BmvGenerator.generate" title="Permalink to this definition"></a></dt>
+<dd><p>Generates a bmv file from a FileTree</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tree</strong> (<a class="reference internal" href="#bulk_mv.file_tree.FileTree" title="bulk_mv.file_tree.FileTree"><em>FileTree</em></a>) – the root node of the FileTree</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the bmv file contents</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-bulk_mv.bmv_parser">
+<span id="bulk-mv-bmv-parser-module"></span><h2>bulk_mv.bmv_parser module<a class="headerlink" href="#module-bulk_mv.bmv_parser" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="bulk_mv.bmv_parser.TreeToOperations">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bulk_mv.bmv_parser.</span></span><span class="sig-name descname"><span class="pre">TreeToOperations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">visit_tokens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bulk_mv.bmv_parser.TreeToOperations" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Transformer</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="bulk_mv.bmv_parser.TreeToOperations.add_op">
+<span class="sig-name descname"><span class="pre">add_op</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">items</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bulk_mv.bmv_parser.TreeToOperations.add_op" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a dict representation of an add operation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>items</strong> (<em>array</em>) – Array of node items from the Lark parser</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict representation of an add operation</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bulk_mv.bmv_parser.TreeToOperations.block">
+<span class="sig-name descname"><span class="pre">block</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">items</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bulk_mv.bmv_parser.TreeToOperations.block" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a dict representation of a block.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>items</strong> (<em>array</em>) – Array of node items from the Lark parser</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict representation of a block</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bulk_mv.bmv_parser.TreeToOperations.block_item">
+<span class="sig-name descname"><span class="pre">block_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">items</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bulk_mv.bmv_parser.TreeToOperations.block_item" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a dict representation of a block item.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>items</strong> (<em>array</em>) – Array of node items from the Lark parser</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict representation of a block item</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bulk_mv.bmv_parser.TreeToOperations.delete_op">
+<span class="sig-name descname"><span class="pre">delete_op</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">items</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bulk_mv.bmv_parser.TreeToOperations.delete_op" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a dict representation of a delete operation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>items</strong> (<em>array</em>) – Array of node items from the Lark parser</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict representation of a delete operation</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bulk_mv.bmv_parser.TreeToOperations.dir">
+<span class="sig-name descname"><span class="pre">dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">items</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bulk_mv.bmv_parser.TreeToOperations.dir" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a dict representation of a directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>items</strong> (<em>array</em>) – Array of node items from the Lark parser</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict representation of a directory</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bulk_mv.bmv_parser.TreeToOperations.dir_op">
+<span class="sig-name descname"><span class="pre">dir_op</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">items</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bulk_mv.bmv_parser.TreeToOperations.dir_op" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a dict representation of a directory operation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>items</strong> (<em>array</em>) – Array of node items from the Lark parser</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict representation of a directory operation</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bulk_mv.bmv_parser.TreeToOperations.dirname">
+<span class="sig-name descname"><span class="pre">dirname</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">items</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bulk_mv.bmv_parser.TreeToOperations.dirname" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a dict representation of a directory name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>items</strong> (<em>array</em>) – Array of node items from the Lark parser</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict representation of a directory name</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bulk_mv.bmv_parser.TreeToOperations.entity">
+<span class="sig-name descname"><span class="pre">entity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">items</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bulk_mv.bmv_parser.TreeToOperations.entity" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a dict representation of an entity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>items</strong> (<em>array</em>) – Array of node items from the Lark parser</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict representation of an entity</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bulk_mv.bmv_parser.TreeToOperations.file_op">
+<span class="sig-name descname"><span class="pre">file_op</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">items</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bulk_mv.bmv_parser.TreeToOperations.file_op" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a dict representation of a file operation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>items</strong> (<em>array</em>) – Array of node items from the Lark parser</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict representation of a file operation</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bulk_mv.bmv_parser.TreeToOperations.filename">
+<span class="sig-name descname"><span class="pre">filename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">items</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bulk_mv.bmv_parser.TreeToOperations.filename" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a dict representation of a file name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>items</strong> (<em>array</em>) – Array of node items from the Lark parser</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict representation of a file name</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bulk_mv.bmv_parser.TreeToOperations.lbrace">
+<span class="sig-name descname"><span class="pre">lbrace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bulk_mv.bmv_parser.TreeToOperations.lbrace" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bulk_mv.bmv_parser.TreeToOperations.lbrack">
+<span class="sig-name descname"><span class="pre">lbrack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bulk_mv.bmv_parser.TreeToOperations.lbrack" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bulk_mv.bmv_parser.TreeToOperations.move_dir_op">
+<span class="sig-name descname"><span class="pre">move_dir_op</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">items</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bulk_mv.bmv_parser.TreeToOperations.move_dir_op" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a dict representation of a directory move operation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>items</strong> (<em>array</em>) – Array of node items from the Lark parser</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict representation of a directory move operation</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bulk_mv.bmv_parser.TreeToOperations.move_file_op">
+<span class="sig-name descname"><span class="pre">move_file_op</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">items</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bulk_mv.bmv_parser.TreeToOperations.move_file_op" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a dict representation of a file move operation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>items</strong> (<em>array</em>) – Array of node items from the Lark parser</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict representation of a file move operation</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bulk_mv.bmv_parser.TreeToOperations.rbrace">
+<span class="sig-name descname"><span class="pre">rbrace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bulk_mv.bmv_parser.TreeToOperations.rbrace" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bulk_mv.bmv_parser.TreeToOperations.rbrack">
+<span class="sig-name descname"><span class="pre">rbrack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bulk_mv.bmv_parser.TreeToOperations.rbrack" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bulk_mv.bmv_parser.TreeToOperations.rename_dir_op">
+<span class="sig-name descname"><span class="pre">rename_dir_op</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">items</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bulk_mv.bmv_parser.TreeToOperations.rename_dir_op" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a dict representation of a directory rename operation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>items</strong> (<em>array</em>) – Array of node items from the Lark parser</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict representation of a directory rename operation</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bulk_mv.bmv_parser.TreeToOperations.rename_file_op">
+<span class="sig-name descname"><span class="pre">rename_file_op</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">items</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bulk_mv.bmv_parser.TreeToOperations.rename_file_op" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a dict representation of a file rename operation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>items</strong> (<em>array</em>) – Array of node items from the Lark parser</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict representation of a file rename operation</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bulk_mv.bmv_parser.TreeToOperations.rename_op">
+<span class="sig-name descname"><span class="pre">rename_op</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bulk_mv.bmv_parser.TreeToOperations.rename_op" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bulk_mv.bmv_parser.TreeToOperations.start">
+<span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">items</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bulk_mv.bmv_parser.TreeToOperations.start" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bulk_mv.bmv_parser.TreeToOperations.unary_op">
+<span class="sig-name descname"><span class="pre">unary_op</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">items</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bulk_mv.bmv_parser.TreeToOperations.unary_op" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a dict representation of a unary operation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>items</strong> (<em>array</em>) – Array of node items from the Lark parser</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict representation of a unary operation</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bulk_mv.bmv_parser.get_operations">
+<span class="sig-prename descclassname"><span class="pre">bulk_mv.bmv_parser.</span></span><span class="sig-name descname"><span class="pre">get_operations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ops</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">current_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bulk_mv.bmv_parser.get_operations" title="Permalink to this definition"></a></dt>
+<dd><p>Extracts operation instructions from BMV Parse tree</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tree</strong> (<em>dict</em>) – BMV Parse tree</p></li>
+<li><p><strong>ops</strong> (<em>dict</em>) – Dictionary to store operations</p></li>
+<li><p><strong>current_path</strong> (<em>str</em>) – Current path of the directory</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary of operations</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bulk_mv.bmv_parser.parse_bmv">
+<span class="sig-prename descclassname"><span class="pre">bulk_mv.bmv_parser.</span></span><span class="sig-name descname"><span class="pre">parse_bmv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bulk_mv.bmv_parser.parse_bmv" title="Permalink to this definition"></a></dt>
+<dd><p>Parses a BMV string and returns a dictionary of operations</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>str</em>) – BMV string</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary of operations</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-bulk_mv.cli">
+<span id="bulk-mv-cli-module"></span><h2>bulk_mv.cli module<a class="headerlink" href="#module-bulk_mv.cli" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="bulk_mv.cli.run">
+<span class="sig-prename descclassname"><span class="pre">bulk_mv.cli.</span></span><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bulk_mv.cli.run" title="Permalink to this definition"></a></dt>
+<dd><p>Runs the full pipeline for bmv.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>start_path</strong> (<em>str</em>) – The directory where you want to run bmv in.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>error code</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-bulk_mv.file_tree">
+<span id="bulk-mv-file-tree-module"></span><h2>bulk_mv.file_tree module<a class="headerlink" href="#module-bulk_mv.file_tree" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="bulk_mv.file_tree.FileTree">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bulk_mv.file_tree.</span></span><span class="sig-name descname"><span class="pre">FileTree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bulk_mv.file_tree.FileTree" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="bulk_mv.file_tree.FileTree.add_child">
+<span class="sig-name descname"><span class="pre">add_child</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">child</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bulk_mv.file_tree.FileTree.add_child" title="Permalink to this definition"></a></dt>
+<dd><p>Adds a child FileTree node to the callee FileTree node</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>child</strong> (<a class="reference internal" href="#bulk_mv.file_tree.FileTree" title="bulk_mv.file_tree.FileTree"><em>FileTree</em></a>) – the node to be made a child</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bulk_mv.file_tree.FileTree.all_paths">
+<span class="sig-name descname"><span class="pre">all_paths</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bulk_mv.file_tree.FileTree.all_paths" title="Permalink to this definition"></a></dt>
+<dd><p>Genterates every path for every node under a FileTree node</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array of string paths</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bulk_mv.file_tree.FileTree.children">
+<span class="sig-name descname"><span class="pre">children</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bulk_mv.file_tree.FileTree.children" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the children of the callee FileTree node</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array of FileTree nodes</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bulk_mv.file_tree.FileTree.name">
+<span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bulk_mv.file_tree.FileTree.name" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the name of the callee FileTree node</p>
+<p>Is derived from the path. The name is the last substring of the path
+after the last slash.</p>
+<p>For example, if the path is “foo/bar/baz”, the name is “baz”.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the name of the callee FileTree node</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-bulk_mv.file_tree_builder">
+<span id="bulk-mv-file-tree-builder-module"></span><h2>bulk_mv.file_tree_builder module<a class="headerlink" href="#module-bulk_mv.file_tree_builder" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="bulk_mv.file_tree_builder.build_from_directory">
+<span class="sig-prename descclassname"><span class="pre">bulk_mv.file_tree_builder.</span></span><span class="sig-name descname"><span class="pre">build_from_directory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bulk_mv.file_tree_builder.build_from_directory" title="Permalink to this definition"></a></dt>
+<dd><p>Builds a FileTree representation of a directory at a given path</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – Path to directory from which a FileTree will be created</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The resulting FileTree</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#bulk_mv.file_tree.FileTree" title="bulk_mv.file_tree.FileTree">FileTree</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-bulk_mv.helpers">
+<span id="bulk-mv-helpers-module"></span><h2>bulk_mv.helpers module<a class="headerlink" href="#module-bulk_mv.helpers" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="bulk_mv.helpers.get_last_index_of_substring">
+<span class="sig-prename descclassname"><span class="pre">bulk_mv.helpers.</span></span><span class="sig-name descname"><span class="pre">get_last_index_of_substring</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">substring</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bulk_mv.helpers.get_last_index_of_substring" title="Permalink to this definition"></a></dt>
+<dd><p>Returns index of the final substring occurring in a given string
+For example, the index of the last ‘/’ character in
+path/to/some/file is 12.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>string</strong> (<em>str</em>) – The full string</p></li>
+<li><p><strong>substring</strong> (<em>str</em>) – The substring your searching for in string</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the last index, or -1 if the substring is not found</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-bulk_mv.operations">
+<span id="bulk-mv-operations-module"></span><h2>bulk_mv.operations module<a class="headerlink" href="#module-bulk_mv.operations" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="bulk_mv.operations.perform_adds">
+<span class="sig-prename descclassname"><span class="pre">bulk_mv.operations.</span></span><span class="sig-name descname"><span class="pre">perform_adds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">paths</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bulk_mv.operations.perform_adds" title="Permalink to this definition"></a></dt>
+<dd><p>Creates all files from given paths</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>paths</strong> (<em>array</em>) – Array of string paths</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bulk_mv.operations.perform_deletes">
+<span class="sig-prename descclassname"><span class="pre">bulk_mv.operations.</span></span><span class="sig-name descname"><span class="pre">perform_deletes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">paths</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bulk_mv.operations.perform_deletes" title="Permalink to this definition"></a></dt>
+<dd><p>Deletes all files from given paths
+If the path doesn’t exist, bmv will silently continue
+with next operations</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>paths</strong> (<em>array</em>) – Array of string paths</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bulk_mv.operations.perform_moves">
+<span class="sig-prename descclassname"><span class="pre">bulk_mv.operations.</span></span><span class="sig-name descname"><span class="pre">perform_moves</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">movements</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bulk_mv.operations.perform_moves" title="Permalink to this definition"></a></dt>
+<dd><p>Moves old file/dir names to new paths as
+specified by movements</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>movements</strong> (<em>dict</em>) – dict containing current_path and new_path as keys</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="bulk_mv.operations.perform_renames">
+<span class="sig-prename descclassname"><span class="pre">bulk_mv.operations.</span></span><span class="sig-name descname"><span class="pre">perform_renames</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">renamings</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bulk_mv.operations.perform_renames" title="Permalink to this definition"></a></dt>
+<dd><p>Renames old file/dir names to new ones as
+specified by renamings</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>renamings</strong> (<em>dict</em>) – dict containing old_path and new_path as keys</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-bulk_mv">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-bulk_mv" title="Permalink to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modules.html" class="btn btn-neutral float-left" title="bulk_mv" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Angel Garcia.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
