@@ -1,99 +1,343 @@
-from parsimonious.grammar import Grammar
-from parsimonious.nodes import NodeVisitor
+from lark import Lark, Transformer
+from .helpers import get_last_index_of_substring
 
-grammar = Grammar(
+
+class TreeToOperations(Transformer):
+    def start(self, items):
+        return items[0]
+
+    def dir(self, items):
+        """Creates a dict representation of a directory.
+
+        Args:
+            items (array): Array of node items from the Lark parser
+
+        Returns:
+            dict: dict representation of a directory
+        """
+        dirname = items[1]['dir_op']['dirname']
+        dirs = []
+        files = []
+        unary_ops = []
+        file_op = []
+        dir_op = []
+
+        info_offset = 6
+        if 'files' in items[info_offset]:
+            files = items[info_offset]['files']
+        if 'dirs' in items[info_offset]:
+            dirs = items[info_offset]['dirs']
+        if 'unary' in items[info_offset]:
+            unary_ops = items[info_offset]['unary']
+        if 'file_op' in items[info_offset]:
+            for op in items[info_offset]['file_op']:
+                if 'file' in op:
+                    files.append(op['file'].value)
+                elif 'rename_file_op' in op:
+                    file_op.append(op)
+                elif 'move_file_op' in op:
+                    file_op.append(op)
+
+        if 'move' in items[1]['dir_op']:
+            dir_op.append({'move': items[1]['dir_op']['move']})
+        if 'rename' in items[1]['dir_op']:
+            dir_op.append({'rename': items[1]['dir_op']['rename']})
+
+        return {
+            'dir': {
+                'dirname': dirname,
+                'files': files,
+                'unary': unary_ops,
+                'dir_op': dir_op,
+                'file_op': file_op,
+                'dirs': dirs,
+            }
+        }
+
+    def dir_op(self, items):
+        """Creates a dict representation of a directory operation.
+
+        Args:
+            items (array): Array of node items from the Lark parser
+
+        Returns:
+            dict: dict representation of a directory operation
+        """
+        return {'dir_op': items[0]}
+
+    def rename_dir_op(self, items):
+        """Creates a dict representation of a directory rename operation.
+
+        Args:
+            items (array): Array of node items from the Lark parser
+
+        Returns:
+            dict: dict representation of a directory rename operation
+        """
+        old_name = items[0]['dirname']
+        new_name = items[4]['dirname']
+        return {'dirname': old_name, 'rename': {'old_name': old_name, 'new_name': new_name}}
+
+    def move_dir_op(self, items):
+        """Creates a dict representation of a directory move operation.
+
+        Args:
+            items (array): Array of node items from the Lark parser
+
+        Returns:
+            dict: dict representation of a directory move operation
+        """
+        current_name = items[0]['dirname']
+        new_path = items[4]['dirname']
+        return {'dirname': current_name, 'move': {'current_name': current_name, 'new_path': new_path}}
+
+    def block(self, items):
+        """Creates a dict representation of a block.
+
+        Args:
+            items (array): Array of node items from the Lark parser
+
+        Returns:
+            dict: dict representation of a block
+        """
+        files = []
+        dirs = []
+        unary_ops = []
+        file_op = []
+        dir_op = []
+
+        for item in items:
+            if 'file' in item:
+                files.append(item['file'])
+            elif 'dir' in item:
+                dirs.append(item['dir'])
+                for op in item['dir']['dir_op']:
+                    if 'move' in op:
+                        dir_op.append(op)
+            elif 'unary' in item:
+                unary_ops.append(item['unary'])
+            elif 'file_op' in item:
+                if 'file' in item['file_op']:
+                    files.append(item['file_op']['file'])
+                elif 'rename_file_op' in item['file_op']:
+                    file_op.append(item['file_op'])
+                elif 'move_file_op' in item['file_op']:
+                    file_op.append(item['file_op'])
+
+        return {'dirs': dirs, 'files': files, 'unary': unary_ops, 'file_op': file_op}
+
+    def block_item(self, items):
+        """Creates a dict representation of a block item.
+
+        Args:
+            items (array): Array of node items from the Lark parser
+
+        Returns:
+            dict: dict representation of a block item
+        """
+        return items[0]
+
+    def entity(self, items):
+        """Creates a dict representation of an entity.
+
+        Args:
+            items (array): Array of node items from the Lark parser
+
+        Returns:
+            dict: dict representation of an entity
+        """
+        if 'file' in items[0]:
+            return {'file': items[0]['file']}
+
+        return items[0]
+
+    def file_op(self, items):
+        """Creates a dict representation of a file operation.
+
+        Args:
+            items (array): Array of node items from the Lark parser
+
+        Returns:
+            dict: dict representation of a file operation
+        """
+        return {'file_op': items[0]}
+
+    def rename_file_op(self, items):
+        """Creates a dict representation of a file rename operation.
+
+        Args:
+            items (array): Array of node items from the Lark parser
+
+        Returns:
+            dict: dict representation of a file rename operation
+        """
+        old_file_name = items[0]['file']
+        new_file_name = items[4]['file']
+        return {'rename_file_op': {'old_name': old_file_name, 'new_name': new_file_name}}
+
+    def move_file_op(self, items):
+        """Creates a dict representation of a file move operation.
+
+        Args:
+            items (array): Array of node items from the Lark parser
+
+        Returns:
+            dict: dict representation of a file move operation
+        """
+        current_name = items[0]['file']
+        new_path = items[4]['dirname']
+        return {'move_file_op': {'current_name': current_name, 'new_path': new_path}}
+
+    def unary_op(self, items):
+        """Creates a dict representation of a unary operation.
+
+        Args:
+            items (array): Array of node items from the Lark parser
+
+        Returns:
+            dict: dict representation of a unary operation
+        """
+        return {'unary': items[0]}
+
+    def add_op(self, items):
+        """Creates a dict representation of an add operation.
+
+        Args:
+            items (array): Array of node items from the Lark parser
+
+        Returns:
+            dict: dict representation of an add operation
+        """
+        return {'add': items[1]}
+
+    def delete_op(self, items):
+        """Creates a dict representation of a delete operation.
+
+        Args:
+            items (array): Array of node items from the Lark parser
+
+        Returns:
+            dict: dict representation of a delete operation
+        """
+        return {'delete': items[1]}
+
+    def dirname(self, items):
+        """Creates a dict representation of a directory name.
+
+        Args:
+            items (array): Array of node items from the Lark parser
+
+        Returns:
+            dict: dict representation of a directory name
+        """
+        return {'dirname': items[0].value}
+
+    def filename(self, items):
+        """Creates a dict representation of a file name.
+
+        Args:
+            items (array): Array of node items from the Lark parser
+
+        Returns:
+            dict: dict representation of a file name
+        """
+        return {'file': items[0].value}
+
+    def rename_op(self, _):
+        return ">"
+
+    def lbrace(self, _):
+        return "{"
+
+    def rbrace(self, _):
+        return "}"
+
+    def lbrack(self, _):
+        return "["
+
+    def rbrack(self, _):
+        return "]"
+
+
+def get_operations(tree, ops, current_path):
+    """Extracts operation instructions from BMV Parse tree
+
+    Args:
+        tree (dict): BMV Parse tree
+        ops (dict): Dictionary to store operations
+        current_path (str): Current path of the directory
+
+    Returns:
+        dict: Dictionary of operations
     """
-    line = ((unary_operation / binary_operation / entity) ws nl?)*
-    entity = (directory / filename)
-    unary_operation = (add / delete)
-    binary_operation = (rename / move)
+    for op in tree['unary']:
+        if 'add' in op:
+            if 'file' in op['add']:
+                final_path = current_path + '/' + op['add']['file']
+                ops['add'].append(final_path.replace("//", "/"))
+            elif 'dir' in op['add']:
+                final_path = current_path + '/' + op['add']['dir']['dirname']
+                ops['add'].append((final_path + '/').replace("//", "/"))
 
-    directory  = ~"[a-zA-Z0-9/_\-\.]+"
-    filename = ~"[A-Za-z0-9\./_\-]+"
+                for file in op['add']['dir']['files']:
+                    ops['add'].append((final_path + '/' + file).replace("//", "/"))
 
-    rename_op = "->"
-    rename = entity rws rename_op rws entity
+                get_operations(op['add']['dir'], ops, final_path.replace("//", "/"))
 
-    move_op = "=>"
-    move = entity rws move_op rws directory
+        elif 'delete' in op:
+            if 'file' in op['delete']:
+                final_path = current_path + '/' + op['delete']['file']
+                ops['delete'].append(final_path.replace("//", "/"))
+            elif 'dir' in op['delete']:
+                final_path = current_path + '/' + op['delete']['dir']['dirname']
+                ops['delete'].append((final_path + '/').replace("//", "/"))
 
-    add_op = "+"
-    add = add_op rws entity
+    for op in tree['file_op']:
+        if "rename_file_op" in op:
+            old_path = current_path + '/' + op['rename_file_op']['old_name']
+            new_path = current_path + '/' + op['rename_file_op']['new_name']
+            ops['rename_files'].append({'old_path': old_path, 'new_path': new_path})
+        if "move_file_op" in op:
+            old_path = current_path + '/' + op['move_file_op']['current_name']
+            new_path = op['move_file_op']['new_path']
+            ops['move_files'].append({'current_path': old_path, 'new_path': new_path})
 
-    delete_op = "-"
-    delete = delete_op rws entity
+    for op in tree['dir_op']:
+        if 'rename' in op:
+            if current_path != op['rename']['old_name']:
+                old_path = current_path + '/'
 
-    rws = ~"\s+"
-    ws = ~"\s*"
-    nl = ~"\\n"
-"""
-)
+                last_slash_index = get_last_index_of_substring(current_path, "/")
+                new_path = current_path[:last_slash_index] + '/' + op['rename']['new_name']
+                ops['rename_dirs'].append({'old_path': old_path, 'new_path': new_path})
+            else:
+                ops['rename_dirs'].append(op['rename'])
+        if 'move' in op:
+            old_path = current_path + '/'
+            new_path = op['move']['new_path']
+
+            ops['move_dirs'].append({'current_path': old_path, 'new_path': new_path})
+
+    for dir in tree['dirs']:
+        final_path = current_path + '/' + dir['dirname']
+        get_operations(dir, ops, final_path.replace('//', '/'))
 
 
-class FileTreeVisitor(NodeVisitor):
-    def visit_line(self, node, visited_children):
-        output = {"move": [], "rename": [], "add": [], "delete": []}  # , "dir": [], "filename": []}
-        for child in visited_children:
-            if child[0][0] is not None:
-                for key, val in child[0][0].items():
-                    output[key].append(val)
+def parse_bmv(data):
+    """Parses a BMV string and returns a dictionary of operations
 
-        return output
+    Args:
+        data (str): BMV string
 
-    def visit_unary_operation(self, node, visited_children):
-        return {node.children[0].expr_name: visited_children[0]}
+    Returns:
+        dict: Dictionary of operations
+    """
+    parser = Lark.open("bmv.lark", rel_to=__file__, parser='lalr')
+    tree = parser.parse(data)
+    res = TreeToOperations().transform(tree)
 
-    def visit_add(self, node, visited_children):
-        _, *_, new_entity = node.children
-        new_name = new_entity.text.strip()
-        return new_name
+    ops = {'add': [], 'delete': [], 'rename_files': [], 'rename_dirs': [], 'move_files': [], 'move_dirs': []}
+    get_operations(res['dir'], ops, res['dir']['dirname'])
+    ops['rename_dirs'] = ops['rename_dirs'][::-1]
 
-    def visit_delete(self, node, visited_children):
-        _, *_, old_entity = node.children
-        old_name = old_entity.text.strip()
-        return old_name
-
-    def visit_binary_operation(self, node, visited_children):
-        return {node.children[0].expr_name: visited_children[0]}
-
-    def visit_move(self, node, visited_children):
-        old_entity_name, _, move_op, *_, new_entity_name = node.children
-
-        old_name = old_entity_name.children[0].text.strip()
-        new_name = new_entity_name.text.strip()
-        return {"current_path": old_name, "new_path": new_name}
-
-    def visit_rename(self, node, visited_children):
-        old_entity_name, _, rename_op, *_, new_entity_name = node.children
-        old_name = old_entity_name.text.strip()
-        new_name = new_entity_name.text.strip()
-        return {"old_name": old_name, "new_name": new_name}
-
-    def visit_entity(self, node, visited_children):
-        # return visited_children[0][0]
-        return None
-
-    def visit_directory(self, node, visited_children):
-        return {"dir": node.text}
-
-    def visit_filename(self, node, visited_children):
-        return {"filename": node.text}
-
-    def visit_ws(self, node, visited_children):
-        return ""
-
-    def visit_move_op(self, node, visited_children):
-        return ""
-
-    def visit_rename_op(self, node, visited_children):
-        return ""
-
-    def visit_delete_op(self, node, visited_children):
-        return ""
-
-    def visit_add_op(self, node, visited_children):
-        return ""
-
-    def generic_visit(self, node, visited_children):
-        """The generic visit method."""
-        return visited_children or node
+    return ops

@@ -1,17 +1,24 @@
-+ web/pages/images/profile_photos
-+ web/assets/
+[web] {
+  + [assets] {
 
-web/
+  }
 
-web/pages/
-web/pages/a.html
-web/pages/b.html
+  [pages] {
+    a.html
+    b.html
+    
+    + [images] {
+      - delete_me.jpg
+      photo.jpg >> web/pages/images/profile_photos
 
-web/static/ => web/assets/
-web/static/main.css -> script.css
-web/static/main.js -> script.js
+      + [profile_photos] {
 
-web/images/ => web/static/assets/images/
-web/images/photo.jpg => web/pages/images/profile_photos
-- web/images/delete_me.jpg
+      }
+    }
+  }
 
+  [static >> web/assets] {
+    main.css > script.css
+    main.js > script.js
+  }
+}

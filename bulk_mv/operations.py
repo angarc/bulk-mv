@@ -18,7 +18,9 @@ def perform_adds(paths):
 
         p = Path(directory)
         p.mkdir(parents=True, exist_ok=True)
-        open(p / filename, 'a').close()
+
+        if filename:
+            open(p / filename, 'a').close()
 
 
 def perform_deletes(paths):
@@ -43,12 +45,13 @@ def perform_renames(renamings):
     specified by renamings
 
     Args:
-        renamings (dict): dict containing old_name and new_name as keys
+        renamings (dict): dict containing old_path and new_path as keys
 
     """
     for renaming in renamings:
-        old_name = renaming["old_name"]
-        new_name = renaming["new_name"]
+        old_name = renaming["old_path"]
+        new_name = renaming["new_path"]
+        print(old_name, new_name)
         rename(old_name, new_name)
 
 

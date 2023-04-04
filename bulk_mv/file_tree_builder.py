@@ -17,7 +17,7 @@ def build_from_directory(path):
     file_tree = FileTree(path)
     ignore_set = set(ignore)
 
-    for entity_name in listdir(path):
+    for entity_name in sorted(listdir(path)):
         new_path = f"{path}/{entity_name}"
 
         child_file_tree = None

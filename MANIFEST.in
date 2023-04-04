@@ -7,6 +7,7 @@ include CONTRIBUTING.md
 include .bumpversion.cfg
 include pyproject.toml
 include Makefile
+include codecov.yml
 
 include branding/*.png
 recursive-include doc *.bat

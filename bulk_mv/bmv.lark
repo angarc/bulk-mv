@@ -1,0 +1,31 @@
+start: dir 
+dir: lbrack dir_op rbrack WS? lbrace WS? block rbrace WS?
+block: block_item*
+block_item: (unary_op | file_op | dir) WS?
+
+dir_op: rename_dir_op | move_dir_op | dirname
+rename_dir_op: dirname WS rename_op WS dirname
+move_dir_op: dirname WS move_op WS dirname
+
+file_op: rename_file_op | move_file_op | filename WS
+rename_file_op: filename WS rename_op WS filename
+move_file_op: filename WS move_op WS dirname 
+
+rename_op: ">"
+move_op: ">>"
+
+unary_op: add_op | delete_op
+add_op: "+" WS entity
+delete_op: "-" WS entity
+
+entity: filename | dir
+
+dirname: /[\w\d_\-\.\/]+/
+filename: /[\w\d_\-\.]+/
+
+lbrace: "{"
+rbrace: "}"
+lbrack: "["
+rbrack: "]"
+
+%import common.WS

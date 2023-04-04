@@ -1,5 +1,6 @@
 from .file_tree_builder import build_from_directory
-from .bmv_parser import grammar, FileTreeVisitor
+from .bmv_parser import parse_bmv
+from .bmv_generator import BmvGenerator
 from os import system
 from .operations import perform_adds, perform_deletes, perform_renames, perform_moves
 
@@ -14,26 +15,23 @@ def run(start_path):
         int: error code
 
     """
-
     ft = build_from_directory(start_path)
-    paths = ft.all_paths()
+    bmv_content = BmvGenerator().generate(ft)
 
     with open("file_tree.bmv", "w") as file:
-        file.write('\n'.join(paths))
+        file.write(bmv_content)
 
     system("vim file_tree.bmv")
 
     with open("file_tree.bmv", "r") as file:
-        tree = grammar.parse(file.read().strip())
-        ftv = FileTreeVisitor()
-        output = ftv.visit(tree)
-
-        # print(json.dumps(output, indent=4))
+        output = parse_bmv(file.read().strip())
 
     perform_adds(output["add"])
     perform_deletes(output["delete"])
-    perform_renames(output["rename"])
-    perform_moves(output["move"])
+    perform_renames(output["rename_files"])
+    perform_renames(output["rename_dirs"])
+    perform_moves(output["move_files"])
+    perform_moves(output["move_dirs"])
 
     perform_deletes(['file_tree.bmv'])
 
