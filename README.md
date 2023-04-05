@@ -68,11 +68,11 @@ Then running `bmv <path>` will open up the following bmv file in a vim buffer:
 
 ### Renaming multiple files
 
-https://user-images.githubusercontent.com/18252779/229863811-2911994a-8007-4ca1-bccc-b04dd08b3a3e.mov
+
 
 ### Moving multiple directories
 
-https://user-images.githubusercontent.com/18252779/229863965-0afdadea-ae9f-446f-8b58-2fb3308948f4.mov
+
 
 # BMV Syntax
 
