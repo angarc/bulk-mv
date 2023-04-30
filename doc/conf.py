@@ -23,7 +23,7 @@ extensions = ['sphinx.ext.autodoc', 'sphinx.ext.napoleon']
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
-version = "0.1.4"
+version = "0.1.5"
 release = version
 
 
