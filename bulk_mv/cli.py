@@ -1,5 +1,5 @@
 from .file_tree_builder import build_from_directory
-from .bmv_parser import parse_bmv
+from .bmv_parser import BmvParser
 from .bmv_generator import BmvGenerator
 from os import system
 from .operations import perform_adds, perform_deletes, perform_renames, perform_moves
@@ -24,7 +24,8 @@ def run(start_path):
     system("vim file_tree.bmv")
 
     with open("file_tree.bmv", "r") as file:
-        output = parse_bmv(file.read().strip())
+        parser = BmvParser()
+        output = parser.parse(file.read().strip())
 
     perform_adds(output["add"])
     perform_deletes(output["delete"])

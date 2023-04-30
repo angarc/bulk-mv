@@ -1,5 +1,5 @@
 import unittest
-from bulk_mv import build_from_directory, parse_bmv, BmvGenerator
+from bulk_mv import build_from_directory, BmvGenerator
 from pathlib import Path
 
 

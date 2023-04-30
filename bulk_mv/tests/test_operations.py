@@ -1,7 +1,7 @@
 import unittest
 from bulk_mv import (
     build_from_directory,
-    parse_bmv,
+    BmvParser,
     perform_adds,
     perform_deletes,
     perform_renames,
@@ -15,7 +15,8 @@ import pathlib
 class TestOperations(unittest.TestCase):
     def setUp(self):
         with open("bulk_mv/tests/dummy_bmv_files/sample3.bmv", "r") as file:
-            self.output = parse_bmv(file.read().strip())
+            parser = BmvParser()
+            self.output = parser.parse(file.read().strip())
 
     def test_perform_adds(self):
         perform_adds(self.output["add"])

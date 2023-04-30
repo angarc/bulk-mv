@@ -51,7 +51,6 @@ def perform_renames(renamings):
     for renaming in renamings:
         old_name = renaming["old_path"]
         new_name = renaming["new_path"]
-        print(old_name, new_name)
         rename(old_name, new_name)
 
 
