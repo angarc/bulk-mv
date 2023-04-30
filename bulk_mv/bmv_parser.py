@@ -259,85 +259,89 @@ class TreeToOperations(Transformer):
         return "]"
 
 
-def get_operations(tree, ops, current_path):
-    """Extracts operation instructions from BMV Parse tree
+class BmvParser:
+    def __init__(self):
+        self.tree = None
 
-    Args:
-        tree (dict): BMV Parse tree
-        ops (dict): Dictionary to store operations
-        current_path (str): Current path of the directory
+    def parse(self, data):
+        """Parses a BMV string and returns a dictionary of operations
 
-    Returns:
-        dict: Dictionary of operations
-    """
-    for op in tree['unary']:
-        if 'add' in op:
-            if 'file' in op['add']:
-                final_path = current_path + '/' + op['add']['file']
-                ops['add'].append(final_path.replace("//", "/"))
-            elif 'dir' in op['add']:
-                final_path = current_path + '/' + op['add']['dir']['dirname']
-                ops['add'].append((final_path + '/').replace("//", "/"))
+        Args:
+            data (str): BMV string
 
-                for file in op['add']['dir']['files']:
-                    ops['add'].append((final_path + '/' + file).replace("//", "/"))
+        Returns:
+            dict: Dictionary of operations
+        """
+        parser = Lark.open("bmv.lark", rel_to=__file__, parser='lalr')
+        tree = parser.parse(data)
+        res = TreeToOperations().transform(tree)
+        self.tree = res['dir']
 
-                get_operations(op['add']['dir'], ops, final_path.replace("//", "/"))
+        ops = {'add': [], 'delete': [], 'rename_files': [], 'rename_dirs': [], 'move_files': [], 'move_dirs': []}
+        self.get_operations(self.tree, ops, res['dir']['dirname'])
+        ops['rename_dirs'] = ops['rename_dirs'][::-1]
 
-        elif 'delete' in op:
-            if 'file' in op['delete']:
-                final_path = current_path + '/' + op['delete']['file']
-                ops['delete'].append(final_path.replace("//", "/"))
-            elif 'dir' in op['delete']:
-                final_path = current_path + '/' + op['delete']['dir']['dirname']
-                ops['delete'].append((final_path + '/').replace("//", "/"))
+        return ops
 
-    for op in tree['file_op']:
-        if "rename_file_op" in op:
-            old_path = current_path + '/' + op['rename_file_op']['old_name']
-            new_path = current_path + '/' + op['rename_file_op']['new_name']
-            ops['rename_files'].append({'old_path': old_path, 'new_path': new_path})
-        if "move_file_op" in op:
-            old_path = current_path + '/' + op['move_file_op']['current_name']
-            new_path = op['move_file_op']['new_path']
-            ops['move_files'].append({'current_path': old_path, 'new_path': new_path})
+    def get_operations(self, tree, ops, current_path):
+        """Extracts operation instructions from BMV Parse tree
 
-    for op in tree['dir_op']:
-        if 'rename' in op:
-            if current_path != op['rename']['old_name']:
+        Args:
+            tree (dict): BMV Parse tree
+            ops (dict): Dictionary to store operations
+            current_path (str): Current path of the directory
+
+        Returns:
+            dict: Dictionary of operations
+        """
+        for op in tree['unary']:
+            if 'add' in op:
+                if 'file' in op['add']:
+                    final_path = current_path + '/' + op['add']['file']
+                    ops['add'].append(final_path.replace("//", "/"))
+                elif 'dir' in op['add']:
+                    final_path = current_path + '/' + op['add']['dir']['dirname']
+                    ops['add'].append((final_path + '/').replace("//", "/"))
+
+                    for file in op['add']['dir']['files']:
+                        ops['add'].append((final_path + '/' + file).replace("//", "/"))
+
+                    self.get_operations(op['add']['dir'], ops, final_path.replace("//", "/"))
+
+            elif 'delete' in op:
+                if 'file' in op['delete']:
+                    final_path = current_path + '/' + op['delete']['file']
+                    ops['delete'].append(final_path.replace("//", "/"))
+                elif 'dir' in op['delete']:
+                    final_path = current_path + '/' + op['delete']['dir']['dirname']
+                    ops['delete'].append((final_path + '/').replace("//", "/"))
+
+        for op in tree['file_op']:
+            if "rename_file_op" in op:
+                old_path = current_path + '/' + op['rename_file_op']['old_name']
+                new_path = current_path + '/' + op['rename_file_op']['new_name']
+                ops['rename_files'].append({'old_path': old_path, 'new_path': new_path})
+            if "move_file_op" in op:
+                old_path = current_path + '/' + op['move_file_op']['current_name']
+                new_path = op['move_file_op']['new_path']
+                ops['move_files'].append({'current_path': old_path, 'new_path': new_path})
+
+        for op in tree['dir_op']:
+            if 'rename' in op:
+                if current_path != op['rename']['old_name']:
+                    old_path = current_path + '/'
+
+                    last_slash_index = get_last_index_of_substring(current_path, "/")
+                    new_path = current_path[:last_slash_index] + '/' + op['rename']['new_name']
+                    ops['rename_dirs'].append({'old_path': old_path, 'new_path': new_path})
+                else:
+                    ops['rename_dirs'].append(op['rename'])
+            if 'move' in op:
                 old_path = current_path + '/'
+                new_path = op['move']['new_path']
 
-                last_slash_index = get_last_index_of_substring(current_path, "/")
-                new_path = current_path[:last_slash_index] + '/' + op['rename']['new_name']
-                ops['rename_dirs'].append({'old_path': old_path, 'new_path': new_path})
-            else:
-                ops['rename_dirs'].append(op['rename'])
-        if 'move' in op:
-            old_path = current_path + '/'
-            new_path = op['move']['new_path']
+                ops['move_dirs'].append({'current_path': old_path, 'new_path': new_path})
 
-            ops['move_dirs'].append({'current_path': old_path, 'new_path': new_path})
-
-    for dir in tree['dirs']:
-        final_path = current_path + '/' + dir['dirname']
-        get_operations(dir, ops, final_path.replace('//', '/'))
-
-
-def parse_bmv(data):
-    """Parses a BMV string and returns a dictionary of operations
-
-    Args:
-        data (str): BMV string
-
-    Returns:
-        dict: Dictionary of operations
-    """
-    parser = Lark.open("bmv.lark", rel_to=__file__, parser='lalr')
-    tree = parser.parse(data)
-    res = TreeToOperations().transform(tree)
-
-    ops = {'add': [], 'delete': [], 'rename_files': [], 'rename_dirs': [], 'move_files': [], 'move_dirs': []}
-    get_operations(res['dir'], ops, res['dir']['dirname'])
-    ops['rename_dirs'] = ops['rename_dirs'][::-1]
-
-    return ops
+        for dir in tree['dirs']:
+            final_path = current_path + '/' + dir['dirname']
+            self.get_operations(dir, ops, final_path.replace('//', '/'))

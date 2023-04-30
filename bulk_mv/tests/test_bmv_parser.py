@@ -1,5 +1,5 @@
 import unittest
-from bulk_mv import build_from_directory, FileTree, parse_bmv
+from bulk_mv import build_from_directory, FileTree, BmvParser
 from pathlib import Path
 
 
@@ -10,7 +10,8 @@ class TestBmvParser(unittest.TestCase):
 
     def test_file_tree_visitor(self):
         sample1 = self.sample1_file_contents()
-        output = parse_bmv(sample1)
+        parser = BmvParser()
+        output = parser.parse(sample1)
 
         expected_output = {
             "add": ["web/assets/", "web/pages/images/", "web/pages/images/profile_photos/"],
