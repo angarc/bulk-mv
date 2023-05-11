@@ -19,3 +19,238 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+Usage
+=====
+
+When you run ``bmv <path>``, a bulk-mv (bmv) file will open in a vim
+buffer, representing the file tree starting in the directory located at
+``<path>``.
+
+Then, you can make your modifications in the vim buffer, and run ``:wq``
+to perform the changes.
+
+Suppose your directory file tree was this:
+
+.. code:: tree
+
+   .
+   ├── README.md
+   └── web
+       ├── public
+       │   └── photos
+       │       └── logo.png
+       └── static
+           ├── javascript
+           │   ├── auth.js
+           │   └── main.js
+           └── styles
+               └── main.css
+
+Then running ``bmv <path>`` will open up the following bmv file in a vim
+buffer:
+
+.. code:: bmv
+
+   [./] {
+     README.md
+     [web] {
+       [public] {
+         [photos] {
+           logo.png
+         }
+       }
+       [static] {
+         [styles] {
+           main.css
+         }
+         [javascript] {
+           auth.js
+           main.js
+         }
+       }
+     }
+   }
+
+Some Use Cases
+--------------
+
+Renaming multiple files
+~~~~~~~~~~~~~~~~~~~~~~~
+
+https://user-images.githubusercontent.com/18252779/229972782-6a5fcad5-a399-409e-b39a-a94f8f6136f9.mov
+
+Moving multiple directories
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+https://user-images.githubusercontent.com/18252779/229972812-952d97f5-55ba-4407-bf0b-9ec14ce10fa2.mov
+
+BMV Syntax
+==========
+
+Here’s how to use the only four operators in BMV (``+``, ``-``, ``>``,
+``>>``) to add, delete, rename, and move files and/or directories.
+
+Creating new files/directories
+------------------------------
+
+You can add files or directories using the ``+`` operator.
+
+Here’s how to use it to add new files and directories
+
+.. code:: bmv
+
+   [./] {
+     README.md
+     [web] {
+       [public] {
+         [photos] {
+           logo.png
+         }
+       }
+
+       + [templates] {
+         + [dashboard] {
+           dashboard.html
+           admin.html
+         }
+
+         index.html
+         about.html
+       }
+
+       [static] {
+         [styles] {
+           main.css
+           + dashboard.css
+         }
+         [javascript] {
+           auth.js
+           main.js
+         }
+       }
+     }
+   }
+
+Notice how you can add multiple nested directories. If you want to add a
+single file you need to type ``+ new_file.txt`` in the directory block
+where you want it.
+
+If you create a new directory with (also new) files inside of it, you
+don’t need to use the ``+`` operator to add them. But for new nested
+directories, you do need to use the ``+`` operator.
+
+Deleting files/directories
+--------------------------
+
+You can delete files or directories using the ``-`` operator.
+
+You can delete entire directories or files like this:
+
+.. code:: bmv
+
+   [./] {
+     README.md
+     [web] {
+       [public] {
+         [photos] {
+           logo.png
+         }
+       }
+       [static] {
+         - [styles] {
+           main.css
+         }
+         [javascript] {
+           - auth.js
+           main.js
+         }
+       }
+     }
+   }
+
+Running this would delete the ``./web/static/javascript/auth.js`` file
+as well as the ``./web/static/styles/`` folder (and of course everything
+in it).
+
+Renaming files/directories
+--------------------------
+
+You can rename files or directories using the ``>`` operator.
+
+.. code:: bmv
+
+   [./] {
+     README.md
+     [web] {
+       [public] {
+         [photos > images] {
+           logo.png
+         }
+       }
+       [static] {
+         [styles] {
+           main.css
+         }
+         [javascript] {
+           auth.js
+           main.js > script.js
+         }
+       }
+     }
+   }
+
+Running this would rename the ``./web/public/photos/`` directory to
+``./web/public/images/``, and rename ``./web/static/javascript/main.js``
+to ``./web/static/javascript/script.js``
+
+Moving files/directories
+------------------------
+
+You can move files or directories using the ``>>`` operator. Moving
+files to paths with non-existent directories *will not be created
+automatically*.
+
+.. code:: bmv
+
+   [./] {
+     README.md >> ./web
+     [web] {
+       [public] {
+         [photos >> ./web/static] {
+           logo.png
+         }
+       }
+       [static] {
+         [styles] {
+           main.css
+         }
+         [javascript] {
+           auth.js
+           main.js
+         }
+       }
+     }
+   }
+
+Running this would move ``./README.md`` to ``./web/README.md``, and move
+``./web/public/photos/`` to ``./web/static/photos``.
+
+You currently have to specify the full path to the directory you want to
+move the file/directory to starting from root path of the file tree (in
+this case, it’s ``./``).
+
+Putting it all together.
+------------------------
+
+Of course, you can mix and match these operations all in one go. Just
+note the order of operations to avoid making a mistake, like moving a
+file to a directory that you haven’t created yet, for example.
+
+Operations are given the following precedence:
+
+1. add
+2. delete
+3. rename (files first, then directories)
+4. move (files first, then directories)
+

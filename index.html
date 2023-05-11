@@ -91,6 +91,214 @@
 <li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
 </ul>
 </section>
+<section id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this heading"></a></h1>
+<p>When you run <code class="docutils literal notranslate"><span class="pre">bmv</span> <span class="pre">&lt;path&gt;</span></code>, a bulk-mv (bmv) file will open in a vim
+buffer, representing the file tree starting in the directory located at
+<code class="docutils literal notranslate"><span class="pre">&lt;path&gt;</span></code>.</p>
+<p>Then, you can make your modifications in the vim buffer, and run <code class="docutils literal notranslate"><span class="pre">:wq</span></code>
+to perform the changes.</p>
+<p>Suppose your directory file tree was this:</p>
+<div class="highlight-tree notranslate"><div class="highlight"><pre><span></span>.
+├── README.md
+└── web
+    ├── public
+    │   └── photos
+    │       └── logo.png
+    └── static
+        ├── javascript
+        │   ├── auth.js
+        │   └── main.js
+        └── styles
+            └── main.css
+</pre></div>
+</div>
+<p>Then running <code class="docutils literal notranslate"><span class="pre">bmv</span> <span class="pre">&lt;path&gt;</span></code> will open up the following bmv file in a vim
+buffer:</p>
+<div class="highlight-bmv notranslate"><div class="highlight"><pre><span></span>[./] {
+  README.md
+  [web] {
+    [public] {
+      [photos] {
+        logo.png
+      }
+    }
+    [static] {
+      [styles] {
+        main.css
+      }
+      [javascript] {
+        auth.js
+        main.js
+      }
+    }
+  }
+}
+</pre></div>
+</div>
+<section id="some-use-cases">
+<h2>Some Use Cases<a class="headerlink" href="#some-use-cases" title="Permalink to this heading"></a></h2>
+<section id="renaming-multiple-files">
+<h3>Renaming multiple files<a class="headerlink" href="#renaming-multiple-files" title="Permalink to this heading"></a></h3>
+<p><a class="reference external" href="https://user-images.githubusercontent.com/18252779/229972782-6a5fcad5-a399-409e-b39a-a94f8f6136f9.mov">https://user-images.githubusercontent.com/18252779/229972782-6a5fcad5-a399-409e-b39a-a94f8f6136f9.mov</a></p>
+</section>
+<section id="moving-multiple-directories">
+<h3>Moving multiple directories<a class="headerlink" href="#moving-multiple-directories" title="Permalink to this heading"></a></h3>
+<p><a class="reference external" href="https://user-images.githubusercontent.com/18252779/229972812-952d97f5-55ba-4407-bf0b-9ec14ce10fa2.mov">https://user-images.githubusercontent.com/18252779/229972812-952d97f5-55ba-4407-bf0b-9ec14ce10fa2.mov</a></p>
+</section>
+</section>
+</section>
+<section id="bmv-syntax">
+<h1>BMV Syntax<a class="headerlink" href="#bmv-syntax" title="Permalink to this heading"></a></h1>
+<p>Here’s how to use the only four operators in BMV (<code class="docutils literal notranslate"><span class="pre">+</span></code>, <code class="docutils literal notranslate"><span class="pre">-</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&gt;&gt;</span></code>) to add, delete, rename, and move files and/or directories.</p>
+<section id="creating-new-files-directories">
+<h2>Creating new files/directories<a class="headerlink" href="#creating-new-files-directories" title="Permalink to this heading"></a></h2>
+<p>You can add files or directories using the <code class="docutils literal notranslate"><span class="pre">+</span></code> operator.</p>
+<p>Here’s how to use it to add new files and directories</p>
+<div class="highlight-bmv notranslate"><div class="highlight"><pre><span></span>[./] {
+  README.md
+  [web] {
+    [public] {
+      [photos] {
+        logo.png
+      }
+    }
+
+    + [templates] {
+      + [dashboard] {
+        dashboard.html
+        admin.html
+      }
+
+      index.html
+      about.html
+    }
+
+    [static] {
+      [styles] {
+        main.css
+        + dashboard.css
+      }
+      [javascript] {
+        auth.js
+        main.js
+      }
+    }
+  }
+}
+</pre></div>
+</div>
+<p>Notice how you can add multiple nested directories. If you want to add a
+single file you need to type <code class="docutils literal notranslate"><span class="pre">+</span> <span class="pre">new_file.txt</span></code> in the directory block
+where you want it.</p>
+<p>If you create a new directory with (also new) files inside of it, you
+don’t need to use the <code class="docutils literal notranslate"><span class="pre">+</span></code> operator to add them. But for new nested
+directories, you do need to use the <code class="docutils literal notranslate"><span class="pre">+</span></code> operator.</p>
+</section>
+<section id="deleting-files-directories">
+<h2>Deleting files/directories<a class="headerlink" href="#deleting-files-directories" title="Permalink to this heading"></a></h2>
+<p>You can delete files or directories using the <code class="docutils literal notranslate"><span class="pre">-</span></code> operator.</p>
+<p>You can delete entire directories or files like this:</p>
+<div class="highlight-bmv notranslate"><div class="highlight"><pre><span></span>[./] {
+  README.md
+  [web] {
+    [public] {
+      [photos] {
+        logo.png
+      }
+    }
+    [static] {
+      - [styles] {
+        main.css
+      }
+      [javascript] {
+        - auth.js
+        main.js
+      }
+    }
+  }
+}
+</pre></div>
+</div>
+<p>Running this would delete the <code class="docutils literal notranslate"><span class="pre">./web/static/javascript/auth.js</span></code> file
+as well as the <code class="docutils literal notranslate"><span class="pre">./web/static/styles/</span></code> folder (and of course everything
+in it).</p>
+</section>
+<section id="renaming-files-directories">
+<h2>Renaming files/directories<a class="headerlink" href="#renaming-files-directories" title="Permalink to this heading"></a></h2>
+<p>You can rename files or directories using the <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> operator.</p>
+<div class="highlight-bmv notranslate"><div class="highlight"><pre><span></span>[./] {
+  README.md
+  [web] {
+    [public] {
+      [photos &gt; images] {
+        logo.png
+      }
+    }
+    [static] {
+      [styles] {
+        main.css
+      }
+      [javascript] {
+        auth.js
+        main.js &gt; script.js
+      }
+    }
+  }
+}
+</pre></div>
+</div>
+<p>Running this would rename the <code class="docutils literal notranslate"><span class="pre">./web/public/photos/</span></code> directory to
+<code class="docutils literal notranslate"><span class="pre">./web/public/images/</span></code>, and rename <code class="docutils literal notranslate"><span class="pre">./web/static/javascript/main.js</span></code>
+to <code class="docutils literal notranslate"><span class="pre">./web/static/javascript/script.js</span></code></p>
+</section>
+<section id="moving-files-directories">
+<h2>Moving files/directories<a class="headerlink" href="#moving-files-directories" title="Permalink to this heading"></a></h2>
+<p>You can move files or directories using the <code class="docutils literal notranslate"><span class="pre">&gt;&gt;</span></code> operator. Moving
+files to paths with non-existent directories <em>will not be created
+automatically</em>.</p>
+<div class="highlight-bmv notranslate"><div class="highlight"><pre><span></span>[./] {
+  README.md &gt;&gt; ./web
+  [web] {
+    [public] {
+      [photos &gt;&gt; ./web/static] {
+        logo.png
+      }
+    }
+    [static] {
+      [styles] {
+        main.css
+      }
+      [javascript] {
+        auth.js
+        main.js
+      }
+    }
+  }
+}
+</pre></div>
+</div>
+<p>Running this would move <code class="docutils literal notranslate"><span class="pre">./README.md</span></code> to <code class="docutils literal notranslate"><span class="pre">./web/README.md</span></code>, and move
+<code class="docutils literal notranslate"><span class="pre">./web/public/photos/</span></code> to <code class="docutils literal notranslate"><span class="pre">./web/static/photos</span></code>.</p>
+<p>You currently have to specify the full path to the directory you want to
+move the file/directory to starting from root path of the file tree (in
+this case, it’s <code class="docutils literal notranslate"><span class="pre">./</span></code>).</p>
+</section>
+<section id="putting-it-all-together">
+<h2>Putting it all together.<a class="headerlink" href="#putting-it-all-together" title="Permalink to this heading"></a></h2>
+<p>Of course, you can mix and match these operations all in one go. Just
+note the order of operations to avoid making a mistake, like moving a
+file to a directory that you haven’t created yet, for example.</p>
+<p>Operations are given the following precedence:</p>
+<ol class="arabic simple">
+<li><p>add</p></li>
+<li><p>delete</p></li>
+<li><p>rename (files first, then directories)</p></li>
+<li><p>move (files first, then directories)</p></li>
+</ol>
+</section>
+</section>
 
 
            </div>
